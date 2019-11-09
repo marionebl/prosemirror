@@ -1,0 +1,28 @@
+{
+  "name": "@marduke182/prosemirror-markdown-serializer",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "Jesús Q",
+  "license": "MIT",
+  "dependencies": {
+    "@marduke182/prosemirror-markdown-schema": "1.0.0",
+    "@marduke182/prosemirror-test-utils": "1.0.0",
+    "@marduke182/prosemirror-utils": "1.0.0",
+    "@types/mdast": "^3.0.3",
+    "@types/prosemirror-model": "^1.7.2",
+    "@types/unist": "^2.0.3",
+    "prosemirror-model": "^1.7.3",
+    "remark": "^11.0.1",
+    "remark-breaks": "^1.0.3",
+    "remark-parse": "^7.0.1",
+    "unified": "^8.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
+  }
+}

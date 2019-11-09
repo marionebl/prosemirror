@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "jsxFactory": "createElement",
+    "baseUrl": "./"
+  },
+  "include": ["./src/**/*"]
+}

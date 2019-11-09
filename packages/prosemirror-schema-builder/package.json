@@ -1,0 +1,19 @@
+{
+  "name": "@marduke182/prosemirror-schema-builder",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "Jesús Q",
+  "license": "MIT",
+  "dependencies": {
+    "@types/prosemirror-model": "^1.7.2",
+    "prosemirror-model": "^1.7.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@marduke182/editor-storybook",
+  "version": "1.0.0",
+  "description": "This is a playground to test my editor versions",
+  "main": "src/index.ts",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@marduke182/editor-markdown": "1.0.0",
+    "@storybook/theming": "^5.2.1",
+    "@types/prosemirror-model": "^1.7.2",
+    "@types/prosemirror-state": "^1.2.3",
+    "@types/prosemirror-view": "^1.11.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "prosemirror-example-setup": "^1.0.1",
+    "prosemirror-model": "^1.7.3",
+    "prosemirror-schema-basic": "^1.0.1",
+    "prosemirror-schema-list": "^1.0.3",
+    "prosemirror-state": "^1.2.4",
+    "prosemirror-view": "^1.11.5",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@storybook/html": "^5.2.1",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.0"
+  },
+  "scripts": {
+    "start": "start-storybook -p 6006",
+    "build": "build-storybook"
+  }
+}

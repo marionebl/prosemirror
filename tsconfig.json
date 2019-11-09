@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "jsx": "react",
+    "lib": ["dom", "es2015", "es2017"],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "paths": {
+      "@marduke182/keymaps": [
+        "../keymaps/src/",
+        "./packages/keymaps/src/"
+      ],
+      "@marduke182/editor-markdown": [
+        "../markdown-editor/src/",
+        "./packages/markdown-editor/src/"
+      ],
+      "@marduke182/prosemirror-markdown": [
+        "../prosemirror-markdown/src/",
+        "./prosemirror-markdown/src/"
+      ],
+      "@marduke182/prosemirror-test-utils": [
+        "../prosemirror-test-utils/src/",
+        "./prosemirror-test-utils/src/"
+      ],
+      "@marduke182/prosemirror-utils": [
+        "../prosemirror-utils/src/",
+        "./prosemirror-utils/src/"
+      ],
+      "@marduke182/prosemirror-markdown-schema": [
+        "../prosemirror-markdown-schema/src/",
+        "./prosemirror-markdown-schema/src/"
+      ],
+      "@marduke182/prosemirror-markdown-serializer": [
+        "../prosemirror-markdown-serializer/src/",
+        "./prosemirror-markdown-serializer/src/"
+      ],
+      "@marduke182/prosemirror-schema-builder": [
+        "../prosemirror-schema-builder/src/",
+        "./prosemirror-schema-builder/src/"
+      ]
+    }
+  },
+  "files": [
+    "./node_modules/@testing-library/jest-dom/extend-expect.d.ts"
+  ]
+}
