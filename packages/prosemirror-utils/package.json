@@ -9,14 +9,5 @@
     "@types/prosemirror-state": "^1.2.3",
     "prosemirror-model": "^1.7.4",
     "prosemirror-state": "^1.2.4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-typescript": "^7.6.0",
-    "babel-jest": "^24.9.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0"
   }
 }

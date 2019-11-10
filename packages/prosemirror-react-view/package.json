@@ -11,14 +11,9 @@
     "prosemirror-state": "^1.2.4"
   },
   "devDependencies": {
-    "@marduke182/prosemirror-markdown": "1.0.0",
-    "@types/prosemirror-view": "^1.11.2",
-    "dom": "^0.0.3",
-    "enzyme": "^3.10.0",
-    "prosemirror-view": "^1.12.1",
+    "@marduke182/prosemirror-markdown": "^1.0.0",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "ts-jest": "^24.1.0"
+    "react-dom": "^16.11.0"
   },
   "peerDependencies": {
     "react": "^16.11.0",
