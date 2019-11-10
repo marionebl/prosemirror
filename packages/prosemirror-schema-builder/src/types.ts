@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ExcludesFromSchema<N = any, M = any> {
   nodes?: N[];
   marks?: M[];

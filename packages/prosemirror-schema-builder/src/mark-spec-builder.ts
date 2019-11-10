@@ -14,6 +14,7 @@ export function createMarkSpecBuilder<Name extends string, Attrs = {}>(
 ): BuilderBase<Name, MarkSpec<Attrs>> {
   return {
     getName: (): Name => name,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     build(excludes?: ExcludesFromSchema<any, any>): MarkSpec<Attrs> | null {
       if (isMarkExcluded(name, excludes)) {
         return null;

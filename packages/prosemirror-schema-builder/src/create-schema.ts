@@ -5,7 +5,9 @@ import { MarkSpec, NodeSpec } from '@marduke182/prosemirror-utils';
 type CustomExclude<K, P> = P extends string ? Exclude<K, P> : K;
 
 export const createSchemaBuilder = <N extends string, M extends string>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   nodes: BuilderBase<N, NodeSpec<any>>[],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   marks: BuilderBase<M, MarkSpec<any>>[],
 ) => {
   return {

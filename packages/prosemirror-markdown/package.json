@@ -10,5 +10,8 @@
     "@marduke182/prosemirror-test-utils": "^1.0.0",
     "@types/prosemirror-model": "^1.7.2",
     "prosemirror-model": "^1.7.3"
+  },
+  "devDependencies": {
+    "eslint-plugin-custom-marduke182": "^1.0.0"
   }
 }

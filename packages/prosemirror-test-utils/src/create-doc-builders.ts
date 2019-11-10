@@ -24,6 +24,7 @@ type MarkBuilderWithAttrs<S extends Schema, Attrs = {}> = (
   content?: Content<S>,
 ) => NodeWithTags<S>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isContent<S extends Schema>(content: any): content is Content<S> {
   return (
     Boolean(content) &&
@@ -31,6 +32,7 @@ function isContent<S extends Schema>(content: any): content is Content<S> {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isAttribute(content: any): content is object {
   return typeof content === 'object' && !isContent(content);
 }
@@ -128,7 +130,8 @@ function getNodeBuilders<S extends Schema, AN extends string>(
   if (aliases) {
     for (const name in aliases) {
       if (aliases.hasOwnProperty(name)) {
-        const { type, attrs } = aliases[name]!;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { type, attrs } = aliases[name] as { type: ExtractNodes<S> | AN; attrs: any };
         const builder = result[type];
         result[name] = (maybeContent, ...content) => {
           if (attrs) {
@@ -221,7 +224,8 @@ function getMarkBuilders<S extends Schema, AM extends string>(
   if (aliases) {
     for (const name in aliases) {
       if (aliases.hasOwnProperty(name)) {
-        const { type, attrs } = aliases[name]!;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { type, attrs } = aliases[name] as { type: ExtractMarks<S> | AM; attrs: any };
         const builder = result[type];
         result[name] = (maybeContent, content) => {
           if (attrs) {
@@ -249,6 +253,7 @@ export type DocBuilders<S extends Schema, AN extends string, AM extends string> 
   };
 
 export type Alias<K extends string, P extends string> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key in P]?: { type: K; attrs?: any };
 };
 

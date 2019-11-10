@@ -12,8 +12,8 @@ import { createSerializer } from '@marduke182/prosemirror-markdown-serializer';
 import { Image, Link, List } from 'mdast';
 import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 
-export type MarkdownSchema = typeof schema;
 export const schema = schemaBuilder.build();
+export type MarkdownSchema = typeof schema;
 export const serialize = createSerializer({
   schema,
   emptyDoc: schema.nodes.doc.create(null, schema.nodes.paragraph.create(null)),
@@ -82,7 +82,9 @@ export const docBuilders = createDocBuilders(schema, {
 });
 
 export const createElement = createElementFactory(docBuilders);
+// eslint-disable-next-line @typescript-eslint/no-namespace,@typescript-eslint/no-unused-vars
 export namespace createElement.JSX {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultAttributes {}
   export type Element = NodeWithTags<MarkdownSchema>;
   export interface IntrinsicElements {

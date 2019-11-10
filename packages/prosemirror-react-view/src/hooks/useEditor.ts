@@ -7,6 +7,7 @@ type ApplyFunction = (tr: Transaction) => void;
 export const useEditorState = <S extends Schema>(
   schema: S,
   initialDoc?: ProsemirrorNode<S>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins?: Plugin<any, S>[],
 ): [EditorState<S> | null, ApplyFunction] => {
   const [editorState, setEditorState] = useState<EditorState<S> | null>(null);

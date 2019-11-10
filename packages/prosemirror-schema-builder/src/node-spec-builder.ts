@@ -15,6 +15,7 @@ export function createNodeSpecBuilder<Name extends string, Attrs = {}>(
 ): BuilderBase<Name, NodeSpec<Attrs>> {
   return {
     getName: () => name,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     build(excludes?: ExcludesFromSchema<any, any>): NodeSpec<Attrs> | null {
       if (isNodeExcluded(name, excludes)) {
         return null;

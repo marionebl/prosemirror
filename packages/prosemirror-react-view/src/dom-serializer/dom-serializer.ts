@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DOMOutputSpec, Mark, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import {
   Children,
@@ -31,6 +32,7 @@ function _toReactElement(
 ): { element: ReactElement; handleChild: boolean } {
   if (typeof structure === 'string') {
     return {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore React support string but type is not updated
       element: structure,
       handleChild: false,

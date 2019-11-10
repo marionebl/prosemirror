@@ -5,10 +5,12 @@ export interface NodeType<Attrs = {}> extends PMNodeType {
   spec: NodeSpec<Attrs>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ExtractNodeAttrs<K> = K extends NodeType<infer Attrs> ? Attrs : Record<string, any>;
 
 export interface MarkType<Attrs = {}> extends PMMarkType {
   spec: MarkSpec<Attrs>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ExtractMarkAttrs<K> = K extends MarkType<infer Attrs> ? Attrs : Record<string, any>;

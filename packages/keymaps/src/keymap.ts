@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ExtractFunctionArguments<Fn> = Fn extends (...args: infer P) => any ? P : never;
 type UnionFromTuple<T> = T extends (infer U)[] ? U : never;
 type Enum<T extends object> = T[keyof T];
@@ -12,10 +13,9 @@ const Enum = <T extends string[]>(...args: T) => {
   );
 };
 
-export type Mod = Enum<typeof Mod>;
 export const Mod = Enum('Shift', 'Alt', 'Ctrl', 'Meta', 'Mod');
+export type Mod = Enum<typeof Mod>;
 
-export type KeyCode = Enum<typeof KeyCode>;
 export const KeyCode = Enum(
   'KeyA',
   'KeyB',
@@ -47,6 +47,7 @@ export const KeyCode = Enum(
   'Enter',
   'Tab',
 );
+export type KeyCode = Enum<typeof KeyCode>;
 
 export interface KeymapHandler<T extends Function> {
   id: string;

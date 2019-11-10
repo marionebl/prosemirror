@@ -7,7 +7,7 @@ export interface OrderedListAttributes {
   tight?: boolean | null;
 }
 
-const orderedList = createNodeSpecBuilder<'ordered_list', OrderedListAttributes>('ordered_list', {
+export default createNodeSpecBuilder<'ordered_list', OrderedListAttributes>('ordered_list', {
   group: block,
   content: atLeastOne(node(listItem.getName())),
   attrs: {
@@ -23,8 +23,9 @@ const orderedList = createNodeSpecBuilder<'ordered_list', OrderedListAttributes>
       tag: 'ol',
       getAttrs(dom) {
         if (dom instanceof HTMLOListElement) {
+          const start = dom.getAttribute('start');
           return {
-            order: dom.hasAttribute('start') ? Number.parseInt(dom.getAttribute('start')!, 10) : 1,
+            order: start ? Number.parseInt(start, 10) : 1,
             tight: dom.hasAttribute('data-tight'),
           };
         }
@@ -42,5 +43,3 @@ const orderedList = createNodeSpecBuilder<'ordered_list', OrderedListAttributes>
     ];
   },
 });
-
-export default orderedList;
