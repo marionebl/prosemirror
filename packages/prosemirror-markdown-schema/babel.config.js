@@ -1,4 +1,4 @@
-module.exports = (api) => {
+module.exports = api => {
   api.cache(true);
 
   return {
@@ -11,7 +11,7 @@ module.exports = (api) => {
             node: '8.9',
           },
           corejs: '2.6.5',
-          modules: "commonjs"
+          modules: 'commonjs',
         },
       ],
       '@babel/preset-typescript',
