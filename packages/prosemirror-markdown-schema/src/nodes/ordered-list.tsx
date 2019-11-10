@@ -1,8 +1,4 @@
-import {
-  atLeastOne,
-  node,
-  createNodeSpecBuilder,
-} from '@marduke182/prosemirror-schema-builder';
+import { atLeastOne, node, createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
 import listItem from './list-item';
 import block from '../groups/block';
 
@@ -11,10 +7,7 @@ export interface OrderedListAttributes {
   tight?: boolean | null;
 }
 
-const orderedList = createNodeSpecBuilder<
-  'ordered_list',
-  OrderedListAttributes
->('ordered_list', {
+const orderedList = createNodeSpecBuilder<'ordered_list', OrderedListAttributes>('ordered_list', {
   group: block,
   content: atLeastOne(node(listItem.getName())),
   attrs: {
@@ -31,9 +24,7 @@ const orderedList = createNodeSpecBuilder<
       getAttrs(dom) {
         if (dom instanceof HTMLOListElement) {
           return {
-            order: dom.hasAttribute('start')
-              ? Number.parseInt(dom.getAttribute('start')!, 10)
-              : 1,
+            order: dom.hasAttribute('start') ? Number.parseInt(dom.getAttribute('start')!, 10) : 1,
             tight: dom.hasAttribute('data-tight'),
           };
         }
@@ -49,7 +40,7 @@ const orderedList = createNodeSpecBuilder<
       },
       0,
     ];
-  }
+  },
 });
 
 export default orderedList;

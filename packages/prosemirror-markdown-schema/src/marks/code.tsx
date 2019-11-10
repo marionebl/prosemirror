@@ -4,5 +4,5 @@ export default createMarkSpecBuilder('code', {
   parseDOM: [{ tag: 'code' }],
   toDOM() {
     return ['code'];
-  }
+  },
 });

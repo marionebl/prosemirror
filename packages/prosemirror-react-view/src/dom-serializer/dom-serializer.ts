@@ -44,7 +44,7 @@ function _toReactElement(
   // Casting to custom implementation to make happy typescript
   const typedStructure = structure as CustomDOMOutputSpecArray;
   // We have a DOM Spec Array
-  let elementType = typedStructure[0];
+  const elementType = typedStructure[0];
   let maybeProps: Record<string, any> | null = null;
   let start = 1;
   if (isProp(typedStructure[1])) {
@@ -55,7 +55,7 @@ function _toReactElement(
   const children: JSX.Element[] = [];
   let childWasHandled = false;
   for (let i = start; i < typedStructure.length; i++) {
-    let child = typedStructure[i] as DOMOutputSpecChild;
+    const child = typedStructure[i] as DOMOutputSpecChild;
     if (child === 0) {
       if (i < typedStructure.length - 1 || i > start)
         throw new RangeError('Content hole must be the only child of its parent node');
@@ -96,10 +96,10 @@ export function toReactElement(
 function gatherToDOM<Type extends Mark | ProsemirrorNode>(
   obj: Record<string, Type['type']>,
 ): Record<string, Type['type']['spec']['toDOM']> {
-  let result: Record<string, Type['type']['spec']['toDOM']> = {};
-  for (let name in obj) {
+  const result: Record<string, Type['type']['spec']['toDOM']> = {};
+  for (const name in obj) {
     if (Object.hasOwnProperty.call(obj, name)) {
-      let toDOM = obj[name].spec.toDOM;
+      const toDOM = obj[name].spec.toDOM;
       if (toDOM) result[name] = toDOM;
     }
   }
@@ -107,7 +107,7 @@ function gatherToDOM<Type extends Mark | ProsemirrorNode>(
 }
 
 function nodesFromSchema(schema: Schema) {
-  let result = gatherToDOM<ProsemirrorNode>(schema.nodes);
+  const result = gatherToDOM<ProsemirrorNode>(schema.nodes);
   if (!result.text) {
     result.text = (node: ProsemirrorNode) => node.text as string;
   }

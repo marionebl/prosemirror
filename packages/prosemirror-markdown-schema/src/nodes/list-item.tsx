@@ -13,7 +13,7 @@ const listItem = createNodeSpecBuilder('list_item', {
   parseDOM: [{ tag: 'li' }],
   toDOM() {
     return ['li', 0];
-  }
+  },
 });
 
 export default listItem;

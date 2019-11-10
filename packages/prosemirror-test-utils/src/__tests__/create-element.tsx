@@ -38,12 +38,8 @@ const createElement = createElementFactory(docBuilder);
 
 describe('JSX', () => {
   test('should create a document with jsx', () => {
-    expect(
-      createElement(
-        'doc',
-        null,
-        createElement('paragraph', null, 'Hello World'),
-      ),
-    ).toEqual(docBuilder.doc(docBuilder.paragraph('Hello World')));
+    expect(createElement('doc', null, createElement('paragraph', null, 'Hello World'))).toEqual(
+      docBuilder.doc(docBuilder.paragraph('Hello World')),
+    );
   });
 });

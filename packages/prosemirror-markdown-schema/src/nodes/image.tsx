@@ -32,7 +32,7 @@ const image = createNodeSpecBuilder<'image', ImageAttributes>('image', {
   ],
   toDOM(node) {
     return ['img', node.attrs];
-  }
+  },
 });
 
 export default image;

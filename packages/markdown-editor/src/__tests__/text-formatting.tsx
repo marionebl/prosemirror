@@ -5,29 +5,19 @@ import { toggleMark } from '../text-formatting';
 import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 import { getNode } from '@marduke182/prosemirror-test-utils';
 
-function setupState<S extends Schema>({
-  node,
-  tags,
-}: NodeWithTags<S>): EditorState<S> {
+function setupState<S extends Schema>({ node, tags }: NodeWithTags<S>): EditorState<S> {
   let state = EditorState.create({ doc: node });
   const start = tags.find(tag => tag.name === 'start');
   const end = tags.find(tag => tag.name === 'end');
   const cursor = tags.find(tag => tag.name === 'cursor');
 
   if (start && end) {
-    state = state.apply(
-      state.tr.setSelection(
-        TextSelection.create(state.doc, start.pos, end.pos),
-      ),
-    );
+    state = state.apply(state.tr.setSelection(TextSelection.create(state.doc, start.pos, end.pos)));
   } else if (cursor) {
-    state = state.apply(
-      state.tr.setSelection(TextSelection.create(state.doc, cursor.pos)),
-    );
+    state = state.apply(state.tr.setSelection(TextSelection.create(state.doc, cursor.pos)));
   }
   return state;
 }
-
 
 describe('toggle mark', () => {
   test('should toggle mark', () => {

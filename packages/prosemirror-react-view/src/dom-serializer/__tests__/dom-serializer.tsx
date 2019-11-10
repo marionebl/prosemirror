@@ -13,12 +13,11 @@ describe('dom serializer', () => {
     });
 
     test('should create a link', () => {
-      expect(toReactElement(['a', { href: 'http://google.com'}], <Text />)).toEqual(
+      expect(toReactElement(['a', { href: 'http://google.com' }], <Text />)).toEqual(
         <a href="http://google.com">
           <Text />
         </a>,
       );
     });
-
   });
 });

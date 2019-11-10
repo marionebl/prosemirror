@@ -1,8 +1,4 @@
-import {
-  maybeA,
-  node,
-  createNodeSpecBuilder,
-} from '@marduke182/prosemirror-schema-builder';
+import { maybeA, node, createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
 import inline from '../groups/inline';
 import block from '../groups/block';
 
@@ -28,7 +24,7 @@ const heading = createNodeSpecBuilder<'heading', HeadingAttributes>('heading', {
   ],
   toDOM(n) {
     return [`h${n.attrs.level}`, 0];
-  }
+  },
 });
 
 export default heading;

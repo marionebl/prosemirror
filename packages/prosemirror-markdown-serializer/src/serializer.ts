@@ -8,7 +8,7 @@ import { Options, Serializer } from './types';
 import { Content } from 'mdast';
 
 export const createSerializer = <S extends Schema>(options: Options<S>): Serializer => (
-  md: string = '',
+  md = '',
 ) => {
   if (!Boolean(md) && options.emptyDoc) {
     return options.emptyDoc;

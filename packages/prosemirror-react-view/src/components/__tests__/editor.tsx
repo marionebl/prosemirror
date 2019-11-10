@@ -26,9 +26,7 @@ function tmp() {}
 `);
 
 test('should render a react view', async () => {
-  const { findByText } = render(
-    <Editor schema={schema} initialDoc={emptyDocument} />,
-  );
+  const { findByText } = render(<Editor schema={schema} initialDoc={emptyDocument} />);
 
   // await waitForElement(() => findByText(/Hello/i));
   // debug();

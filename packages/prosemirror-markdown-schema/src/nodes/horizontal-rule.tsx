@@ -6,5 +6,5 @@ export default createNodeSpecBuilder('horizontal_rule', {
   parseDOM: [{ tag: 'hr' }],
   toDOM() {
     return ['div', ['hr']];
-  }
+  },
 });

@@ -26,7 +26,7 @@ const link = createMarkSpecBuilder<'link', LinkAttributes>('link', {
   ],
   toDOM(node) {
     return ['a', node.attrs];
-  }
+  },
 });
 
 export default link;

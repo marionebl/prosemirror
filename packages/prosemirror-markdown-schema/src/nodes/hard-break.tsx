@@ -1,7 +1,6 @@
 import { createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
 import inline from '../groups/inline';
 
-
 export default createNodeSpecBuilder('hard_break', {
   inline: true,
   group: inline,
@@ -9,5 +8,5 @@ export default createNodeSpecBuilder('hard_break', {
   parseDOM: [{ tag: 'br' }],
   toDOM() {
     return ['br'];
-  }
+  },
 });
