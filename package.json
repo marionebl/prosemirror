@@ -6,7 +6,8 @@
     "typecheck": "tsc --noEmit --project ./tsconfig.typecheck.json"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "storybooks/*"
   ],
   "devDependencies": {
     "@babel/core": "^7.6.4",
