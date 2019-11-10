@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "lint": "jest --config jest.eslint.config.js",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --noEmit --project ./tsconfig.typecheck.json"
   },
   "workspaces": [
     "packages/*"

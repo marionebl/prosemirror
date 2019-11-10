@@ -1,3 +1,4 @@
+/* @jsx createElement */
 import { createElement } from '@marduke182/prosemirror-markdown';
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
