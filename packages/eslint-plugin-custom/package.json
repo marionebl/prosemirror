@@ -1,8 +1,0 @@
-{
-  "name": "eslint-plugin-custom-marduke182",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "eslint-plugin-react": "^7.16.0"
-  }
-}
