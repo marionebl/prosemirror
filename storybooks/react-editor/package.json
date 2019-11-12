@@ -1,0 +1,27 @@
+{
+  "name": "@marduke182/react-editor-storybook",
+  "version": "1.0.0",
+  "description": "This is a playground to test my react editor versions",
+  "main": "src/index.ts",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@marduke182/react-markdown-editor": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@storybook/addon-actions": "^5.2.6",
+    "@storybook/addon-links": "^5.2.6",
+    "@storybook/addons": "^5.2.6",
+    "@storybook/react": "^5.2.6",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.0",
+    "awesome-typescript-loader": "^5.2.1"
+  },
+  "scripts": {
+    "start": "start-storybook -p 6006",
+    "build": "build-storybook",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  }
+}

@@ -37,7 +37,5 @@ function useReactNode(node: ProsemirrorNode, offset: number): React.ReactElement
 }
 
 export const EditorNode: FunctionComponent<Props> = ({ node, offset }) => {
-  const ReactNodeElement = useReactNode(node, offset);
-
-  return ReactNodeElement;
+  return useReactNode(node, offset);
 };

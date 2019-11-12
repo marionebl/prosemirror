@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, SyntheticEvent } from 'react';
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { useEditorState } from '../hooks/useEditor';
@@ -12,6 +12,10 @@ export interface EditorProps {
   plugins?: Plugin[];
 }
 
+const preventDefault = (e: SyntheticEvent) => {
+  e.preventDefault();
+};
+
 export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plugins }) => {
   const [editorState] = useEditorState(schema, initialDoc, plugins);
   if (!editorState) {
@@ -19,7 +23,16 @@ export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plu
   }
   return (
     <DOMSerializerProvider schema={schema}>
-      <div data-testid="prosemirror-react-view">
+      <div
+        data-testid="prosemirror-react-view"
+        contentEditable={true}
+        // TODO: Intercept this and insert text instead
+        onKeyDown={preventDefault}
+        onKeyPress={preventDefault}
+        onKeyUp={preventDefault}
+        onSelect={preventDefault}
+        suppressContentEditableWarning
+      >
         {/* We dont render root doc because doesnt contain toDOM */}
         {map(editorState.doc, (child, offset, index) => (
           <EditorNode node={child} offset={offset} key={index} />
