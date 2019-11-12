@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@marduke182/prosemirror-react-view": "^1.0.0"
+    "@marduke182/react-markdown-editor": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
@@ -14,7 +14,9 @@
     "@storybook/addon-links": "^5.2.6",
     "@storybook/addons": "^5.2.6",
     "@storybook/react": "^5.2.6",
-    "babel-loader": "^8.0.6"
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.0",
+    "awesome-typescript-loader": "^5.2.1"
   },
   "scripts": {
     "start": "start-storybook -p 6006",
