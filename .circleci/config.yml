@@ -49,7 +49,7 @@ jobs: # a collection of steps
       - save_cache: *save-yarn-cache
       - run: *test
       - store_test_results:
-          path: ./junit.xml
+          path: test-reporters
 
 workflows:
   version: 2
