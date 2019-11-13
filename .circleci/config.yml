@@ -17,10 +17,10 @@ aliases :
     name : Installing yarn packages
     command : yarn
   - &lint
-    name: lint
+    name: Checking code style
     command: yarn lint --max-workers=2
   - &test
-    name: test
+    name: Running all tests
     command: yarn test --max-workers=2
 
 defaults: &defaults
