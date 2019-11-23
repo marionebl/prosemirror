@@ -1,5 +1,5 @@
-import React from 'react';
 import { MarkdownEditor } from '@marduke182/react-markdown-editor';
+import React from 'react';
 import './editor.css';
 
 export default {

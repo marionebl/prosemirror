@@ -1,4 +1,5 @@
 import { createSchemaBuilder } from '@marduke182/prosemirror-schema-builder';
+
 import doc from './nodes/doc';
 import paragraph from './nodes/paragraph';
 import heading from './nodes/heading';

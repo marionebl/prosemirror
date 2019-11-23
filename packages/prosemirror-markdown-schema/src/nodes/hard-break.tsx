@@ -1,4 +1,5 @@
 import { createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
+
 import inline from '../groups/inline';
 
 export default createNodeSpecBuilder('hard_break', {

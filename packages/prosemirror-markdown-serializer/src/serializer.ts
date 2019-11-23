@@ -1,12 +1,13 @@
 import unified from 'unified';
-import { Schema } from 'prosemirror-model';
-import toPMDoc from './toPMDoc';
 import markdown from 'remark-parse';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import breaks from 'remark-breaks';
-import { Options, Serializer } from './types';
+import { Schema } from 'prosemirror-model';
 import { Content } from 'mdast';
+
+import toPMDoc from './toPMDoc';
+import { Options, Serializer } from './types';
 
 export const createSerializer = <S extends Schema>(options: Options<S>): Serializer => (
   md = '',

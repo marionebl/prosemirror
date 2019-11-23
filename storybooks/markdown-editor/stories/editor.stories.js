@@ -1,5 +1,4 @@
 import { document } from 'global';
-
 import 'prosemirror-view/style/prosemirror.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-menu/style/menu.css';

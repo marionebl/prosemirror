@@ -1,6 +1,7 @@
-import React, { FunctionComponent, SyntheticEvent } from 'react';
-import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
+import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import React, { FunctionComponent, SyntheticEvent } from 'react';
+
 import { useEditorState } from '../hooks/useEditor';
 import { EditorNode } from './editor-node';
 import { map } from '../utils';

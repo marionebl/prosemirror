@@ -1,7 +1,8 @@
+import { schema, serialize } from '@marduke182/prosemirror-markdown';
 import React from 'react';
 import { render } from '@testing-library/react';
+
 import { Editor } from '../editor';
-import { schema, serialize } from '@marduke182/prosemirror-markdown';
 
 const emptyDocument = serialize(`
 # Heading 1

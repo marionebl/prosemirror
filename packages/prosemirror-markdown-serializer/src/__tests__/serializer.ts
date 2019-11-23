@@ -1,9 +1,9 @@
-import { createSerializer } from '../serializer';
-
 import { schemaBuilder } from '@marduke182/prosemirror-markdown-schema';
 import { createDocBuilders, getNode } from '@marduke182/prosemirror-test-utils';
-import { Options, Serializer } from '../types';
 import { Image, Link, List } from 'mdast';
+
+import { createSerializer } from '../serializer';
+import { Options, Serializer } from '../types';
 
 const schema = schemaBuilder.build();
 const {

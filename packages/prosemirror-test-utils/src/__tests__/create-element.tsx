@@ -1,4 +1,5 @@
 import { Schema } from 'prosemirror-model';
+
 import { createElementFactory } from '../create-element';
 import { createDocBuilders } from '../create-doc-builders';
 

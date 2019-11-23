@@ -1,5 +1,5 @@
-import { MarkType as PMMarkType, NodeType as PMNodeType } from 'prosemirror-model';
 import { MarkSpec, NodeSpec } from '@marduke182/prosemirror-utils';
+import { MarkType as PMMarkType, NodeType as PMNodeType } from 'prosemirror-model';
 
 export interface NodeType<Attrs = {}> extends PMNodeType {
   spec: NodeSpec<Attrs>;

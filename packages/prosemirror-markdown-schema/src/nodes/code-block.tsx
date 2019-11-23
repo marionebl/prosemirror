@@ -1,4 +1,5 @@
 import { createNodeSpecBuilder, maybeA, node } from '@marduke182/prosemirror-schema-builder';
+
 import block from '../groups/block';
 import text from './text';
 

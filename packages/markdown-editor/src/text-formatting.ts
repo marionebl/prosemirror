@@ -1,10 +1,10 @@
+import { MarkdownSchema } from '@marduke182/prosemirror-markdown';
+import { ExtractMarks } from '@marduke182/prosemirror-utils';
 import { TextSelection, Transaction } from 'prosemirror-state';
 import { MarkType, Schema } from 'prosemirror-model';
 
 import { KeyCode, Keymap, Mod } from '../../keymaps';
 import { Command } from './type';
-import { MarkdownSchema } from '@marduke182/prosemirror-markdown';
-import { ExtractMarks } from '@marduke182/prosemirror-utils';
 
 export const canApplyMark = <S extends Schema>(
   markType: MarkType<S>,

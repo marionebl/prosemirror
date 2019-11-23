@@ -9,8 +9,8 @@ import {
   schemaBuilder,
 } from '@marduke182/prosemirror-markdown-schema';
 import { createSerializer } from '@marduke182/prosemirror-markdown-serializer';
-import { Image, Link, List } from 'mdast';
 import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
+import { Image, Link, List } from 'mdast';
 
 export const schema = schemaBuilder.build();
 export type MarkdownSchema = typeof schema;

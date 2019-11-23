@@ -1,4 +1,5 @@
 import { atLeastOne, node, createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
+
 import listItem from './list-item';
 import block from '../groups/block';
 

@@ -1,7 +1,8 @@
+import { NodeSpec } from '@marduke182/prosemirror-utils';
+
 import { ExpressionBuilder } from './content-builder';
 import { BuilderBase, ExcludesFromSchema } from './types';
 import { isMarkExcluded, isNodeExcluded } from './helpers';
-import { NodeSpec } from '@marduke182/prosemirror-utils';
 
 type BaseNodeSpec<Attrs> = Omit<NodeSpec<Attrs>, 'content' | 'marks'>;
 export type BuilderNodeSpec<Attrs = {}> = BaseNodeSpec<Attrs> & {

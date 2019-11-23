@@ -1,3 +1,7 @@
+import { ExtractMarks } from '@marduke182/prosemirror-utils';
+import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Content, Parent } from 'mdast';
+
 import {
   Factory,
   GetAttrs,
@@ -7,10 +11,7 @@ import {
   MdastNodes,
   Options,
 } from '../types';
-import { Node as PMNode, Schema } from 'prosemirror-model';
 import { all } from '../all';
-import { Content, Parent } from 'mdast';
-import { ExtractMarks } from '@marduke182/prosemirror-utils';
 
 export const createUnknownHandler: HandlerCreator = ({ schema }) => () => schema.text('UNKNOWN');
 

@@ -1,6 +1,7 @@
+import { Schema } from 'prosemirror-model';
+
 import { createTextHandler } from './text';
 import { Handlers, Options } from '../types';
-import { Schema } from 'prosemirror-model';
 import { createMarkHandler, createNodeHandler } from './helpers';
 import { createInlineCodeHandler } from './inlineCode';
 import { createCodeHandler } from './code';

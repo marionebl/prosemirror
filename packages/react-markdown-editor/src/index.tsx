@@ -1,6 +1,6 @@
 import { schema, serialize } from '@marduke182/prosemirror-markdown';
-import React, { FunctionComponent } from 'react';
 import { Editor } from '@marduke182/prosemirror-react-view';
+import React, { FunctionComponent } from 'react';
 
 interface Props {
   md: string;

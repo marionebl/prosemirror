@@ -1,10 +1,11 @@
 /* @jsx createElement */
 import { createElement } from '@marduke182/prosemirror-markdown';
-import { EditorState, TextSelection } from 'prosemirror-state';
-import { Schema } from 'prosemirror-model';
-import { toggleMark } from '../text-formatting';
 import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 import { getNode } from '@marduke182/prosemirror-test-utils';
+import { EditorState, TextSelection } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+
+import { toggleMark } from '../text-formatting';
 
 function setupState<S extends Schema>({ node, tags }: NodeWithTags<S>): EditorState<S> {
   let state = EditorState.create({ doc: node });
