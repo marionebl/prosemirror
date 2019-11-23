@@ -2,8 +2,10 @@
 
 import { DOMOutputSpec, Mark, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import {
+  forwardRef,
   Children,
   cloneElement,
+  ComponentType,
   createElement,
   FunctionComponent,
   ReactElement,
@@ -31,25 +33,25 @@ function isNode(node: any): node is Node {
 function _toReactElement(
   structure: DOMOutputSpec,
   childrenElement?: ReactNode,
-): { element: ReactElement; handleChild: boolean } {
+): { element: ReactElement; handledChild: boolean } {
   if (typeof structure === 'string') {
     return {
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore React support string but type is not updated
+      // @ts-ignore React support strings but type definition has not been updated
       element: structure,
-      handleChild: false,
+      handledChild: false,
     };
   }
 
   if (isNode(structure)) {
-    throw new Error('Prosemirror React View it doesnt support plain dom nodes yet.');
+    throw new Error('Prosemirror React View it doesnt support plain dom nodes.');
   }
 
   // Casting to custom implementation to make happy typescript
   const typedStructure = structure as CustomDOMOutputSpecArray;
   // We have a DOM Spec Array
   const elementType = typedStructure[0];
-  let maybeProps: Record<string, any> | null = null;
+  let maybeProps: Record<string, any> | null = {};
   let start = 1;
   if (isProp(typedStructure[1])) {
     start = 2;
@@ -65,17 +67,17 @@ function _toReactElement(
         throw new RangeError('Content hole must be the only child of its parent node');
       return {
         element: createElement(elementType, maybeProps, childrenElement),
-        handleChild: true,
+        handledChild: true,
       };
     } else {
-      const { element: childElement, handleChild } = _toReactElement(child, childrenElement);
-      childWasHandled = childWasHandled || handleChild;
+      const { element: childElement, handledChild } = _toReactElement(child, childrenElement);
+      childWasHandled = childWasHandled || handledChild;
       children.push(childElement);
     }
   }
   return {
     element: createElement(elementType, maybeProps, ...children),
-    handleChild: childWasHandled,
+    handledChild: childWasHandled,
   };
 }
 
@@ -83,16 +85,20 @@ export function toReactElement(
   structure: DOMOutputSpec,
   childrenElement?: ReactNode,
 ): ReactElement {
-  const { element, handleChild } = _toReactElement(structure, childrenElement);
-  if (!handleChild) {
+  const { element, handledChild } = _toReactElement(structure, childrenElement);
+
+  // TODO: Think in a better way to assure the children was handled only once.
+  if (!handledChild) {
+    const props = {};
+    // No children
     if (Children.count(childrenElement) === 0) {
-      return element;
+      return cloneElement(element, props);
     }
     const children = [childrenElement];
     if (element.props && element.props.children) {
       children.push(element.props.children);
     }
-    return cloneElement(element, undefined, ...children);
+    return cloneElement(element, props, ...children);
   }
   return element;
 }
@@ -127,28 +133,28 @@ export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<
   const marks = marksFromSchema(schema);
 
   return {
-    serializeNode(node): FunctionComponent<{}> {
-      return ({ children }) => {
+    serializeNode(node): ComponentType<{}> {
+      return forwardRef<any, any>((props, ref) => {
         const toDom = nodes[node.type.name];
         if (!toDom) {
           return null;
         }
         const spec = toDom(node);
-        const element = toReactElement(spec, children);
+        const element = toReactElement(spec, props.children);
 
-        return element;
-      };
+        return cloneElement(element, { ref });
+      });
     },
     serializeMark(mark, inline): FunctionComponent<{}> {
-      return ({ children }) => {
+      return forwardRef<any, any>(({ children }, ref) => {
         const toDom = marks[mark.type.name];
         if (!toDom) {
           return null;
         }
         const spec = toDom(mark, inline);
         const element = toReactElement(spec, children);
-        return element;
-      };
+        return cloneElement(element, { ref });
+      });
     },
   };
 }
