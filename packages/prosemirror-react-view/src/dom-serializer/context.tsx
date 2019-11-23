@@ -1,5 +1,6 @@
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Schema } from 'prosemirror-model';
+
 import { createDomSerializer } from './dom-serializer';
 import { DOMSerializer } from './types';
 

@@ -1,5 +1,6 @@
-import { HandlerCreator } from '../types';
 import { Code } from 'mdast';
+
+import { HandlerCreator } from '../types';
 import { createUnknownHandler, getHandlerOptions } from './helpers';
 
 export const createCodeHandler: HandlerCreator = options => {

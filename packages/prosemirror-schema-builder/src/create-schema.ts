@@ -1,6 +1,7 @@
-import { BuilderBase, ExcludesFromSchema } from './types';
-import { Schema } from 'prosemirror-model';
 import { MarkSpec, NodeSpec } from '@marduke182/prosemirror-utils';
+import { Schema } from 'prosemirror-model';
+
+import { BuilderBase, ExcludesFromSchema } from './types';
 
 type CustomExclude<K, P> = P extends string ? Exclude<K, P> : K;
 

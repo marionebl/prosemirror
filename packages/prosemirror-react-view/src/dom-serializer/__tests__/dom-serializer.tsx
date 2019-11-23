@@ -1,5 +1,6 @@
-import { toReactElement } from '../dom-serializer';
 import React from 'react';
+
+import { toReactElement } from '../dom-serializer';
 
 describe('dom serializer', () => {
   describe('toReactElement', () => {

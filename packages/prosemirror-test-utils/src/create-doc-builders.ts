@@ -1,6 +1,7 @@
-import { MarkType, Node, Schema } from 'prosemirror-model';
-import { ExtractMarkAttrs, ExtractNodeAttrs, NodeType } from './types';
 import { ExtractMarks, ExtractNodes } from '@marduke182/prosemirror-utils';
+import { MarkType, Node, Schema } from 'prosemirror-model';
+
+import { ExtractMarkAttrs, ExtractNodeAttrs, NodeType } from './types';
 
 interface Tag {
   name: string;

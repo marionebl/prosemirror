@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { DOMOutputSpec, Mark, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import {
   Children,
@@ -8,6 +9,7 @@ import {
   ReactElement,
   ReactNode,
 } from 'react';
+
 import { DOMSerializer } from './types';
 
 type Props = Record<string, any>;

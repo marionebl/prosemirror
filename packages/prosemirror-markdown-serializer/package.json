@@ -11,6 +11,7 @@
     "@types/mdast": "^3.0.3",
     "@types/prosemirror-model": "^1.7.2",
     "@types/unist": "^2.0.3",
+    "mdast": "^3.0.0",
     "prosemirror-model": "^1.7.3",
     "remark": "^11.0.1",
     "remark-breaks": "^1.0.3",

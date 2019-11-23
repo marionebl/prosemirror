@@ -1,7 +1,8 @@
-import { one } from './one';
 import { Node as PMNode } from 'prosemirror-model';
-import { Factory } from './types';
 import { Content, Parent } from 'mdast';
+
+import { one } from './one';
+import { Factory } from './types';
 
 export function all(h: Factory, parent: Parent) {
   const nodes: Content[] = parent.children || [];

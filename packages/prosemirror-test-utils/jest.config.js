@@ -1,4 +1,5 @@
 const { defaults: tsjPreset } = require('ts-jest/presets');
+
 const packageName = require('./package.json')
   .name.split('@marduke182/')
   .pop();

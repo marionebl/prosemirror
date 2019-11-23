@@ -1,3 +1,4 @@
+import { ExtractMarks, ExtractNodes } from '@marduke182/prosemirror-utils';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import {
   Blockquote,
@@ -27,7 +28,6 @@ import {
   ThematicBreak,
   YAML,
 } from 'mdast';
-import { ExtractMarks, ExtractNodes } from '@marduke182/prosemirror-utils';
 
 interface MdastNodesTypes {
   root: Root;

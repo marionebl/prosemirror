@@ -1,6 +1,7 @@
-import { Factory, MdastNodes } from './types';
 import { Content } from 'mdast';
 import { Node as PMNode } from 'prosemirror-model';
+
+import { Factory, MdastNodes } from './types';
 
 const own = {}.hasOwnProperty;
 

@@ -9,6 +9,7 @@
     "@marduke182/prosemirror-markdown-serializer": "^1.0.0",
     "@marduke182/prosemirror-test-utils": "^1.0.0",
     "@types/prosemirror-model": "^1.7.2",
+    "mdast": "^3.0.0",
     "prosemirror-model": "^1.7.3"
   }
 }

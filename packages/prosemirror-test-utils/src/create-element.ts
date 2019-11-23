@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Schema } from 'prosemirror-model';
+
 import { DocBuilders, NodeWithTags } from './create-doc-builders';
 
 type SelectionElement = 'select-text' | 'cursor';

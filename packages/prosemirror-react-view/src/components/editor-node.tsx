@@ -1,5 +1,6 @@
 import { Node as ProsemirrorNode } from 'prosemirror-model';
 import React, { FunctionComponent, useEffect, useState } from 'react';
+
 import { map } from '../utils';
 import { useDOMSerializer } from '../dom-serializer/context';
 

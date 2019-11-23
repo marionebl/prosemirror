@@ -4,8 +4,9 @@ import {
   node,
   sequence,
 } from '@marduke182/prosemirror-schema-builder';
-import paragraph from './paragraph';
+
 import block from '../groups/block';
+import paragraph from './paragraph';
 
 const listItem = createNodeSpecBuilder('list_item', {
   defining: true,

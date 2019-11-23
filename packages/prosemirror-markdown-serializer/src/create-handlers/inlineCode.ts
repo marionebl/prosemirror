@@ -1,5 +1,6 @@
-import { HandlerCreator } from '../types';
 import { InlineCode } from 'mdast';
+
+import { HandlerCreator } from '../types';
 import { addMark, createUnknownHandler, getHandlerOptions } from './helpers';
 
 export const createInlineCodeHandler: HandlerCreator = options => {
