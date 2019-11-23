@@ -1,5 +1,5 @@
 import { Node as ProsemirrorNode } from 'prosemirror-model';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { forwardRef, Ref, useEffect, useState } from 'react';
 
 import { map } from '../utils';
 import { useDOMSerializer } from '../dom-serializer/context';
@@ -9,20 +9,48 @@ type Props = {
   offset: number;
 };
 
-function useReactNode(node: ProsemirrorNode, offset: number): React.ReactElement | null {
+type PMViewDesc = any;
+
+interface NodeWithPMViewDesc extends Node {
+  pmViewDesc?: PMViewDesc;
+}
+
+function applyPMViewDesc(pmViewDesc: PMViewDesc) {
+  return (dom?: NodeWithPMViewDesc) => {
+    if (dom) {
+      dom.pmViewDesc = pmViewDesc;
+    }
+  };
+}
+
+function useReactNode(
+  node: ProsemirrorNode,
+  offset: number,
+  ref: Ref<any>,
+): React.ReactElement | null {
   const domSerializer = useDOMSerializer();
   const [Element, setElement] = useState<React.ReactElement | null>(null);
 
   useEffect(() => {
     const Component = domSerializer.serializeNode(node);
 
+    const pmViewDesc = {
+      parent: node,
+    };
     // Create children nodes
     const children = map(node, (child, childOffset, index) => {
-      return <EditorNode node={child} offset={offset + childOffset} key={index} />;
+      return (
+        <EditorNode
+          node={child}
+          offset={offset + childOffset}
+          key={index}
+          ref={applyPMViewDesc(pmViewDesc)}
+        />
+      );
     });
 
     // Create wrapper based on node component
-    let Wrapper = <Component>{children}</Component>;
+    let Wrapper = <Component ref={ref}>{children}</Component>;
 
     // Wrap node component with the marks
     for (let i = node.marks.length - 1; i >= 0; i--) {
@@ -37,6 +65,7 @@ function useReactNode(node: ProsemirrorNode, offset: number): React.ReactElement
   return Element;
 }
 
-export const EditorNode: FunctionComponent<Props> = ({ node, offset }) => {
-  return useReactNode(node, offset);
-};
+// eslint-disable-next-line react/display-name
+export const EditorNode = forwardRef<any, Props>(({ node, offset }, ref) => {
+  return useReactNode(node, offset, ref);
+});

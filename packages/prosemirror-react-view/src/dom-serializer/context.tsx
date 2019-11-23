@@ -1,11 +1,19 @@
-import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  forwardRef,
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Schema } from 'prosemirror-model';
 
 import { createDomSerializer } from './dom-serializer';
 import { DOMSerializer } from './types';
 
 const DOMSerializerDummy: DOMSerializer = {
-  serializeNode: () => () => <>You need to create a DOM serializer</>,
+  // eslint-disable-next-line react/display-name
+  serializeNode: () => forwardRef<any, any>(() => <>You need to create a DOM serializer</>),
   serializeMark: () => () => <>You need to create a DOM serializer</>,
 };
 

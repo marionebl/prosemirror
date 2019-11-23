@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { DOMOutputSpec, Mark, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { DOMOutputSpec, Mark, Node as ProseMirrorNode, Schema } from 'prosemirror-model';
 import {
-  forwardRef,
   Children,
   cloneElement,
-  ComponentType,
   createElement,
-  FunctionComponent,
+  forwardRef,
+  PropsWithChildren,
   ReactElement,
   ReactNode,
 } from 'react';
@@ -103,7 +101,7 @@ export function toReactElement(
   return element;
 }
 
-function gatherToDOM<Type extends Mark | ProsemirrorNode>(
+function gatherToDOM<Type extends Mark | ProseMirrorNode>(
   obj: Record<string, Type['type']>,
 ): Record<string, Type['type']['spec']['toDOM']> {
   const result: Record<string, Type['type']['spec']['toDOM']> = {};
@@ -117,9 +115,9 @@ function gatherToDOM<Type extends Mark | ProsemirrorNode>(
 }
 
 function nodesFromSchema(schema: Schema) {
-  const result = gatherToDOM<ProsemirrorNode>(schema.nodes);
+  const result = gatherToDOM<ProseMirrorNode>(schema.nodes);
   if (!result.text) {
-    result.text = (node: ProsemirrorNode) => node.text as string;
+    result.text = (node: ProseMirrorNode) => node.text as string;
   }
   return result;
 }
@@ -133,8 +131,8 @@ export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<
   const marks = marksFromSchema(schema);
 
   return {
-    serializeNode(node): ComponentType<{}> {
-      return forwardRef<any, any>((props, ref) => {
+    serializeNode(node) {
+      return forwardRef<any, PropsWithChildren<{}>>((props, ref) => {
         const toDom = nodes[node.type.name];
         if (!toDom) {
           return null;
@@ -145,7 +143,7 @@ export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<
         return cloneElement(element, { ref });
       });
     },
-    serializeMark(mark, inline): FunctionComponent<{}> {
+    serializeMark(mark, inline) {
       return forwardRef<any, any>(({ children }, ref) => {
         const toDom = marks[mark.type.name];
         if (!toDom) {
