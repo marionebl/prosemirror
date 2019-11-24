@@ -1,7 +1,7 @@
-import { atLeastOne, node, createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
+import { atLeastOne, createNodeSpecBuilder, node } from '@marduke182/prosemirror-schema-builder';
 
-import listItem from './list-item';
 import block from '../groups/block';
+import listItem from './list-item';
 
 export interface BulletListAttributes {
   tight?: boolean | null;

@@ -1,7 +1,7 @@
 import { MarkSpec } from '@marduke182/prosemirror-utils';
 
-import { BuilderBase, ExcludesFromSchema } from './types';
 import { isMarkExcluded } from './helpers';
+import { BuilderBase, ExcludesFromSchema } from './types';
 
 export type BaseMarkSpec<Attrs> = Omit<MarkSpec<Attrs>, 'excludes'>;
 

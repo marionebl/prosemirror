@@ -1,5 +1,5 @@
-import { BuilderNodeSpec, createNodeSpecBuilder } from '../node-spec-builder';
 import { ExpressionBuilder } from '../content-builder';
+import { BuilderNodeSpec, createNodeSpecBuilder } from '../node-spec-builder';
 
 const paragraphNode = 'paragraph';
 const paragraphSpec: BuilderNodeSpec = {

@@ -1,8 +1,9 @@
-import { document } from 'global';
 import 'prosemirror-view/style/prosemirror.css';
 import 'prosemirror-example-setup/style/style.css';
 import 'prosemirror-menu/style/menu.css';
+
 import { mountEditor } from '@marduke182/markdown-editor';
+import { document } from 'global';
 
 export default {
   title: 'Editor',

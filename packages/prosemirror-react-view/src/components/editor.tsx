@@ -1,11 +1,11 @@
-import { Plugin } from 'prosemirror-state';
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import React, { FunctionComponent, SyntheticEvent } from 'react';
 
-import { useEditorState } from '../hooks/useEditor';
-import { EditorNode } from './editor-node';
-import { map } from '../utils';
 import { DOMSerializerProvider } from '../dom-serializer/context';
+import { useEditorState } from '../hooks/useEditor';
+import { map } from '../utils';
+import { EditorNode } from './editor-node';
 
 export interface EditorProps {
   schema: Schema;

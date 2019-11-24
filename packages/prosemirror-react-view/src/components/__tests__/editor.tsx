@@ -1,6 +1,6 @@
 import { schema, serialize } from '@marduke182/prosemirror-markdown';
-import React from 'react';
 import { render } from '@testing-library/react';
+import React from 'react';
 
 import { Editor } from '../editor';
 

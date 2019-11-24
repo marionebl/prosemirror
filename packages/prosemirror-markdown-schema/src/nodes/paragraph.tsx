@@ -1,7 +1,7 @@
-import { maybeA, node, createNodeSpecBuilder } from '@marduke182/prosemirror-schema-builder';
+import { createNodeSpecBuilder, maybeA, node } from '@marduke182/prosemirror-schema-builder';
 
-import inline from '../groups/inline';
 import block from '../groups/block';
+import inline from '../groups/inline';
 
 const paragraph = createNodeSpecBuilder('paragraph', {
   group: block,

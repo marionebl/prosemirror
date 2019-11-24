@@ -1,4 +1,3 @@
-import { createDocBuilders, createElementFactory } from '@marduke182/prosemirror-test-utils';
 import {
   BulletListAttributes,
   CodeBlockAttributes,
@@ -9,6 +8,7 @@ import {
   schemaBuilder,
 } from '@marduke182/prosemirror-markdown-schema';
 import { createSerializer } from '@marduke182/prosemirror-markdown-serializer';
+import { createDocBuilders, createElementFactory } from '@marduke182/prosemirror-test-utils';
 import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 import { Image, Link, List } from 'mdast';
 

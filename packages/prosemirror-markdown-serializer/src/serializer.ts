@@ -1,10 +1,10 @@
-import unified from 'unified';
-import markdown from 'remark-parse';
+import { Content } from 'mdast';
+import { Schema } from 'prosemirror-model';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import breaks from 'remark-breaks';
-import { Schema } from 'prosemirror-model';
-import { Content } from 'mdast';
+import markdown from 'remark-parse';
+import unified from 'unified';
 
 import toPMDoc from './toPMDoc';
 import { Options, Serializer } from './types';

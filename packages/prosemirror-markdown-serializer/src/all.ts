@@ -1,5 +1,5 @@
-import { Node as PMNode } from 'prosemirror-model';
 import { Content, Parent } from 'mdast';
+import { Node as PMNode } from 'prosemirror-model';
 
 import { one } from './one';
 import { Factory } from './types';
