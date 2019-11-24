@@ -1,6 +1,7 @@
 // This is only basic styles for typescript for react need to extend this
 module.exports = {
   parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+  plugins: ['react-hooks'],
   extends: [
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
   ],
@@ -14,7 +15,9 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
-    "react/prop-types": "off", // We use typescript props for this
+    'react/prop-types': 'off', // We use typescript props for this
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
   settings: {
     react: {

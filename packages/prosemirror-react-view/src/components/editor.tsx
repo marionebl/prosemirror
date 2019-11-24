@@ -6,6 +6,7 @@ import { useEditorState } from '../hooks/useEditor';
 import { EditorNode } from './editor-node';
 import { map } from '../utils';
 import { DOMSerializerProvider } from '../dom-serializer/context';
+import { usePMViewDesc } from './hooks/usePMViewDesc';
 
 export interface EditorProps {
   schema: Schema;
@@ -19,13 +20,17 @@ const preventDefault = (e: SyntheticEvent) => {
 
 export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plugins }) => {
   const [editorState] = useEditorState(schema, initialDoc, plugins);
+  const [pmViewDesc, applyPMViewDesc] = usePMViewDesc(editorState ? editorState.doc : undefined);
+
   if (!editorState) {
     return null;
   }
+
   return (
     <DOMSerializerProvider schema={schema}>
       <div
         data-testid="prosemirror-react-view"
+        ref={applyPMViewDesc}
         contentEditable={true}
         // TODO: Intercept this and insert text instead
         onKeyDown={preventDefault}
@@ -36,7 +41,7 @@ export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plu
       >
         {/* We dont render root doc because doesnt contain toDOM */}
         {map(editorState.doc, (child, offset, index) => (
-          <EditorNode node={child} offset={offset} key={index} />
+          <EditorNode node={child} offset={offset} key={index} parent={pmViewDesc} />
         ))}
       </div>
     </DOMSerializerProvider>

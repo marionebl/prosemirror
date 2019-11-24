@@ -9,8 +9,8 @@ export const useEditorState = <S extends Schema>(
   initialDoc?: ProsemirrorNode<S>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins?: Plugin<any, S>[],
-): [EditorState<S> | null, ApplyFunction] => {
-  const [editorState, setEditorState] = useState<EditorState<S> | null>(null);
+): [EditorState<S> | undefined, ApplyFunction] => {
+  const [editorState, setEditorState] = useState<EditorState<S>>();
 
   useEffect(() => {
     setEditorState(EditorState.create({ schema, plugins, doc: initialDoc }));

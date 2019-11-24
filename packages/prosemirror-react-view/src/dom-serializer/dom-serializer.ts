@@ -5,6 +5,7 @@ import {
   cloneElement,
   createElement,
   forwardRef,
+  Fragment,
   PropsWithChildren,
   ReactElement,
   ReactNode,
@@ -34,9 +35,7 @@ function _toReactElement(
 ): { element: ReactElement; handledChild: boolean } {
   if (typeof structure === 'string') {
     return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore React support strings but type definition has not been updated
-      element: structure,
+      element: createElement(Fragment, null, structure),
       handledChild: false,
     };
   }
@@ -132,7 +131,7 @@ export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<
 
   return {
     serializeNode(node) {
-      return forwardRef<any, PropsWithChildren<{}>>((props, ref) => {
+      return forwardRef<Node, PropsWithChildren<{}>>((props, ref) => {
         const toDom = nodes[node.type.name];
         if (!toDom) {
           return null;
@@ -140,7 +139,8 @@ export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<
         const spec = toDom(node);
         const element = toReactElement(spec, props.children);
 
-        return cloneElement(element, { ref });
+        const clonedElement = cloneElement(element, { ref });
+        return clonedElement;
       });
     },
     serializeMark(mark, inline) {
