@@ -42,7 +42,7 @@ function useReactNode(
 
     // Set final element
     setElement(Wrapper);
-  }, [node, offset, domSerializer]);
+  }, [pmViewDesc, applyPMViewDesc, node, offset, domSerializer]);
 
   return Element;
 }

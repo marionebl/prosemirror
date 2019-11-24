@@ -5,7 +5,6 @@ import {
   cloneElement,
   createElement,
   forwardRef,
-  Fragment,
   PropsWithChildren,
   ReactElement,
   ReactNode,
@@ -35,7 +34,7 @@ function _toReactElement(
 ): { element: ReactElement; handledChild: boolean } {
   if (typeof structure === 'string') {
     return {
-      element: createElement(Fragment, null, structure),
+      element: createElement('span', null, structure),
       handledChild: false,
     };
   }
