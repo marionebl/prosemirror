@@ -1,7 +1,7 @@
 import { Schema } from 'prosemirror-model';
 
-import { createElementFactory } from '../create-element';
 import { createDocBuilders } from '../create-doc-builders';
+import { createElementFactory } from '../create-element';
 
 const baseSchema = new Schema({
   nodes: {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
+import { useEffect, useState } from 'react';
 
 type ApplyFunction = (tr: Transaction) => void;
 

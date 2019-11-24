@@ -1,4 +1,4 @@
-import { group, atLeastOne, atLeast, maybeA, node, sequence } from '../content-builder';
+import { atLeast, atLeastOne, group, maybeA, node, sequence } from '../content-builder';
 
 describe('Expression Builder', () => {
   const heading = 'heading';

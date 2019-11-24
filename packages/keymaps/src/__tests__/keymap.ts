@@ -1,4 +1,4 @@
-import { Keymap, Mod, KeyCode } from '../keymap';
+import { KeyCode, Keymap, Mod } from '../keymap';
 
 type Command = () => boolean;
 

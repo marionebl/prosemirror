@@ -1,10 +1,10 @@
 import { Schema } from 'prosemirror-model';
 
-import { createTextHandler } from './text';
 import { Handlers, Options } from '../types';
+import { createCodeHandler } from './code';
 import { createMarkHandler, createNodeHandler } from './helpers';
 import { createInlineCodeHandler } from './inlineCode';
-import { createCodeHandler } from './code';
+import { createTextHandler } from './text';
 
 export const createHandlers = <S extends Schema>(options: Options<S>): Handlers => ({
   root: createNodeHandler(options, 'root'),

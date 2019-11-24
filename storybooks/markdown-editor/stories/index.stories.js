@@ -1,4 +1,4 @@
-import { document, console } from 'global';
+import { console, document } from 'global';
 
 export default {
   title: 'Demo',

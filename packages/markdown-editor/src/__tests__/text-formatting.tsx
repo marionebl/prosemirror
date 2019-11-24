@@ -1,9 +1,9 @@
 /* @jsx createElement */
 import { createElement } from '@marduke182/prosemirror-markdown';
-import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 import { getNode } from '@marduke182/prosemirror-test-utils';
-import { EditorState, TextSelection } from 'prosemirror-state';
+import { NodeWithTags } from '@marduke182/prosemirror-test-utils/src/create-doc-builders';
 import { Schema } from 'prosemirror-model';
+import { EditorState, TextSelection } from 'prosemirror-state';
 
 import { toggleMark } from '../text-formatting';
 

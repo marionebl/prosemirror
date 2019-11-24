@@ -1,9 +1,9 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
 import { Content } from 'mdast';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 
+import { createHandlers } from './create-handlers';
 import { one } from './one';
 import { Factory, Options } from './types';
-import { createHandlers } from './create-handlers';
 
 function factory(options: Options<Schema>): Factory {
   return {
