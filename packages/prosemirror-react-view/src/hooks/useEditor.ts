@@ -19,6 +19,8 @@ export const useEditorState = <S extends Schema>(
   const apply: ApplyFunction = (tr: Transaction) => {
     if (editorState) {
       const newState = editorState.apply(tr);
+      const { anchor, head } = newState.selection;
+      setSelection(anchor, head, this.rootPmViewDesc);
       setEditorState(newState);
     }
   };

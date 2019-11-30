@@ -19,8 +19,13 @@ const preventDefault = (e: SyntheticEvent) => {
 };
 
 export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plugins }) => {
-  const [editorState] = useEditorState(schema, initialDoc, plugins);
+  const [editorState, apply] = useEditorState(schema, initialDoc, plugins);
   const [pmViewDesc, applyPMViewDesc] = usePMViewDesc(editorState ? editorState.doc : undefined);
+
+  // const handleKeyPress = useCallback<KeyboardEventHandler>(
+  //   ,
+  //   [editorState, apply],
+  // );
 
   if (!editorState) {
     return null;
@@ -33,9 +38,21 @@ export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plu
         ref={applyPMViewDesc}
         contentEditable={true}
         // TODO: Intercept this and insert text instead
-        onKeyDown={preventDefault}
-        onKeyPress={preventDefault}
-        onKeyUp={preventDefault}
+        // onKeyDown={preventDefault}
+        onKeyPress={e => {
+          if (!editorState) {
+            return;
+          }
+
+          const { $from, $to } = editorState.selection;
+          const text = e.key;
+          const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
+
+          apply(tr);
+
+          e.preventDefault();
+        }}
+        // onKeyUp={preventDefault}
         onSelect={preventDefault}
         suppressContentEditableWarning
       >

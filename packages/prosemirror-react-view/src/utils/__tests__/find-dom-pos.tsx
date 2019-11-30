@@ -24,10 +24,13 @@ const { doc, p, strong } = docBuilders;
 
 describe('findStartPos', () => {
   test('should find position', async () => {
-    const docBuild = doc(p('foo', strong('<start>strong'), 'bar'));
+    const docBuild = doc(p('foo', strong('strong'), '<start>bar'));
     const { findByText } = createEditor(docBuild);
 
-    const element = (await findByText(/strong/i)) as NodeWithPMViewDesc;
-    expect(findStartPosition(element.pmViewDesc!)).toBe(getPos(docBuild, 'start'));
+    const element = (await findByText(/bar/i)) as NodeWithPMViewDesc;
+    if (!element.pmViewDesc) {
+      throw new Error('No `pmViewDesc` on the specified node');
+    }
+    expect(findStartPosition(element.pmViewDesc)).toBe(getPos(docBuild, 'start'));
   });
 });

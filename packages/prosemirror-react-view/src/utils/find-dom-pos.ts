@@ -27,14 +27,14 @@ export function findStartPosition(pmViewDesc: PMViewDesc) {
       pos = pos + sibling.nodeSize;
       sibling = parentNode.child(i++);
     }
-    // If I have all the sibling
-    if (parentNode.childCount === i && parentNode.isBlock) {
+
+    if (node.isBlock) {
       pos = pos + 1;
     }
     current = current.parent;
   }
 
-  return pos;
+  return pos + 1; // pos + 1 (doc size)
 }
 
 export function findDomPos(dom: NodeWithPMViewDesc, offset = 0) {
