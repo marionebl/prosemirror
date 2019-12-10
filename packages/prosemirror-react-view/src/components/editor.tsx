@@ -1,6 +1,6 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
-import React, { memo, NamedExoticComponent } from 'react';
+import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
@@ -13,9 +13,9 @@ export interface EditorProps {
   plugins?: Plugin[];
 }
 
-// const preventDefault = (e: SyntheticEvent) => {
-//   e.preventDefault();
-// };
+const preventDefault = (e: SyntheticEvent) => {
+  e.preventDefault();
+};
 
 export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initialDoc, plugins }) => {
   const [editorState, apply] = useEditorState(schema, initialDoc, plugins);
@@ -43,8 +43,8 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
 
           e.preventDefault();
         }}
-        // onKeyUp={preventDefault}
-        // onSelect={preventDefault}
+        onKeyUp={preventDefault}
+        onSelect={preventDefault}
         suppressContentEditableWarning
       >
         {/* We dont render root doc because doesnt contain toDOM */}

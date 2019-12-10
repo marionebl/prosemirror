@@ -1,5 +1,5 @@
 import { Node as ProsemirrorNode } from 'prosemirror-model';
-import React, { useMemo, memo, NamedExoticComponent } from 'react';
+import React, { memo, NamedExoticComponent, useMemo } from 'react';
 
 import { useDOMSerializer } from '../dom-serializer/context';
 import { map } from '../utils';
@@ -12,11 +12,12 @@ export const EditorNode: NamedExoticComponent<Props> = memo(({ node }) => {
   const domSerializer = useDOMSerializer();
 
   return useMemo(() => {
+    let index = 0; // TODO: need to figure out a better way to persist this key for each same node
     const NodeComponent = domSerializer.getNodeComponent(node);
 
     // Create children nodes
-    const children = map(node, (child, index) => {
-      return <EditorNode node={child} key={index} />;
+    const children = map(node, child => {
+      return <EditorNode node={child} key={index++} />;
     });
 
     // Create wrapper based on node component
