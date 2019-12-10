@@ -1,10 +1,11 @@
 import { schema, serialize } from '@marduke182/prosemirror-markdown';
 import { Editor } from '@marduke182/prosemirror-react-view';
-import React, { FunctionComponent } from 'react';
-import { keymap } from 'prosemirror-keymap';
-import { baseKeymap } from 'prosemirror-commands';
-import { inputRules, InputRule, textblockTypeInputRule } from 'prosemirror-inputrules';
+// @ts-ignore
+import { exampleSetup } from 'prosemirror-example-setup';
+import { InputRule, inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
+import React, { FunctionComponent } from 'react';
+
 interface Props {
   md: string;
 }
@@ -25,7 +26,7 @@ const rules = [
   headingRule(schema.nodes.heading, 6),
 ];
 
-const plugins = [inputRules({ rules }), keymap(baseKeymap)];
+const plugins = [...exampleSetup({ menuBar: false, schema }), inputRules({ rules })];
 
 export const MarkdownEditor: FunctionComponent<Props> = ({ md }) => {
   return <Editor schema={schema} initialDoc={serialize(md || '')} plugins={plugins} />;

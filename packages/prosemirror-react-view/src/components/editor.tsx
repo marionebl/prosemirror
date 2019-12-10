@@ -1,11 +1,26 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
 import { map } from '../utils';
 import { EditorNode } from './editor-node';
+
+type Command = (tr: Transaction) => void;
+
+interface PartialEditorView<S extends Schema = any> {
+  state: EditorState<S>;
+  dispatch: Command;
+}
+
+export interface PMEditorProps<S extends Schema = any> {
+  handleKeyDown?: ((view: PartialEditorView<S>, event: KeyboardEvent) => boolean) | null;
+  /**
+   * Handler for `keypress` events.
+   */
+  handleKeyPress?: ((view: PartialEditorView<S>, event: KeyboardEvent) => boolean) | null;
+}
 
 export interface EditorProps {
   schema: Schema;
@@ -16,6 +31,22 @@ export interface EditorProps {
 const preventDefault = (e: SyntheticEvent) => {
   e.preventDefault();
 };
+
+function someProp(editorState: EditorState, propName: keyof PMEditorProps, cb: Function) {
+  const plugins = editorState.plugins;
+  if (plugins) {
+    for (let i = 0; i < plugins.length; i++) {
+      const plugin = plugins[i];
+      const prop = plugin.props[propName] as PMEditorProps[typeof propName];
+      if (prop != null) {
+        const value = cb ? cb(prop) : prop;
+        if (value) {
+          return value;
+        }
+      }
+    }
+  }
+}
 
 export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initialDoc, plugins }) => {
   const [editorState, apply] = useEditorState(schema, initialDoc, plugins);
@@ -29,19 +60,29 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
         data-testid="prosemirror-react-view"
         contentEditable={true}
         // TODO: Intercept this and insert text instead
-        // onKeyDown={preventDefault}
-        onKeyPress={e => {
-          if (!editorState) {
-            return;
+        onKeyDown={event => {
+          if (
+            someProp(editorState, 'handleKeyDown', (f: Function) =>
+              f({ state: editorState, dispatch: apply, endOfTextblock: () => false }, event),
+            )
+          ) {
+            event.preventDefault();
+          }
+        }}
+        onKeyPress={event => {
+          const handled = someProp(editorState, 'handleKeyPress', (f: Function) =>
+            f({ state: editorState, dispatch: apply, endOfTextblock: () => false }, event),
+          );
+
+          if (!handled) {
+            const { $from, $to } = editorState.selection;
+            const text = event.key;
+            const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
+
+            apply(tr);
           }
 
-          const { $from, $to } = editorState.selection;
-          const text = e.key;
-          const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
-
-          apply(tr);
-
-          e.preventDefault();
+          event.preventDefault();
         }}
         onKeyUp={preventDefault}
         onSelect={preventDefault}

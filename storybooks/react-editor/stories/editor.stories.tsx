@@ -8,4 +8,5 @@ export default {
   title: 'Editor',
 };
 
-export const basic = () => <MarkdownEditor md={bigDocument} />;
+export const basic = () => <MarkdownEditor md={'Start here'} />;
+export const bigDocumentExample = () => <MarkdownEditor md={bigDocument} />;
