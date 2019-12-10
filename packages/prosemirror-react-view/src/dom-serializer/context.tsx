@@ -13,8 +13,8 @@ import { createDomSerializer } from './dom-serializer';
 import { DOMSerializer } from './types';
 
 const DOMSerializerDummy: DOMSerializer = {
-  serializeNode: () => () => <>You need to create a DOM serializer</>,
-  serializeMark: () => () => <>You need to create a DOM serializer</>,
+  getNodeComponent: () => () => <>You need to create a DOM serializer</>,
+  getMarkComponent: () => () => <>You need to create a DOM serializer</>,
 };
 
 const Context = createContext<DOMSerializer>(DOMSerializerDummy);

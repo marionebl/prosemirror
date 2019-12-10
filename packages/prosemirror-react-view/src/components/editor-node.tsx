@@ -12,7 +12,7 @@ export const EditorNode: NamedExoticComponent<Props> = memo(({ node }) => {
   const domSerializer = useDOMSerializer();
 
   return useMemo(() => {
-    const Component = domSerializer.serializeNode(node);
+    const NodeComponent = domSerializer.getNodeComponent(node);
 
     // Create children nodes
     const children = map(node, (child, index) => {
@@ -20,15 +20,17 @@ export const EditorNode: NamedExoticComponent<Props> = memo(({ node }) => {
     });
 
     // Create wrapper based on node component
-    Component.displayName = node.type.name;
-    let Wrapper = <Component>{children}</Component>;
+    let Wrapper = <NodeComponent node={node}>{children}</NodeComponent>;
 
     // Wrap node component with the marks
     for (let i = node.marks.length - 1; i >= 0; i--) {
       const mark = node.marks[i];
-      const Mark = domSerializer.serializeMark(node.marks[i], node.isInline);
-      Mark.displayName = mark.type.name;
-      Wrapper = <Mark>{Wrapper}</Mark>;
+      const Mark = domSerializer.getMarkComponent(node.marks[i]);
+      Wrapper = (
+        <Mark mark={mark} inline={node.isInline}>
+          {Wrapper}
+        </Mark>
+      );
     }
 
     // Set final element

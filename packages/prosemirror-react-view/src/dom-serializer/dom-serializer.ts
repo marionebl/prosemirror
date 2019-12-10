@@ -10,7 +10,7 @@ import {
   ReactNode,
 } from 'react';
 
-import { DOMSerializer } from './types';
+import { DOMSerializer, MarkComponentProps, NodeComponentProps } from './types';
 
 type Props = Record<string, any>;
 type DOMOutputSpecChild = DOMOutputSpec | 0;
@@ -122,33 +122,71 @@ function marksFromSchema(schema: Schema) {
   return gatherToDOM<Mark>(schema.marks);
 }
 
+function createNodeComponent(
+  name: string,
+  toDom?: ProsemirrorNode['type']['spec']['toDOM'],
+): FunctionComponent<NodeComponentProps> {
+  const Component: FunctionComponent<NodeComponentProps> = ({ node, children }) => {
+    if (!toDom) {
+      return null;
+    }
+    const spec = toDom(node);
+    return toReactElement(spec, children);
+  };
+
+  Component.displayName = name;
+
+  return Component;
+}
+
+function createMarkComponent(
+  name: string,
+  toDom?: Mark['type']['spec']['toDOM'],
+): FunctionComponent<MarkComponentProps> {
+  const MarkComponent: FunctionComponent<MarkComponentProps> = ({ mark, inline, children }) => {
+    if (!toDom) {
+      return null;
+    }
+    const spec = toDom(mark, inline);
+    return toReactElement(spec, children);
+  };
+
+  MarkComponent.displayName = name;
+
+  return MarkComponent;
+}
+
 export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<S> {
   const nodes = nodesFromSchema(schema);
   const marks = marksFromSchema(schema);
 
-  return {
-    serializeNode(node): FunctionComponent<{}> {
-      return ({ children }) => {
-        const toDom = nodes[node.type.name];
-        if (!toDom) {
-          return null;
-        }
-        const spec = toDom(node);
-        const element = toReactElement(spec, children);
+  const nodeComponentsCache = new Map<string, FunctionComponent<NodeComponentProps>>();
+  const markComponentsCache = new Map<string, FunctionComponent<MarkComponentProps>>();
 
-        return element;
-      };
+  for (const [nodeName, toDom] of Object.entries(nodes)) {
+    const NodeComponent = createNodeComponent(nodeName, toDom);
+    nodeComponentsCache.set(nodeName, NodeComponent);
+  }
+
+  for (const [markName, toDom] of Object.entries(marks)) {
+    const MarkComponent = createMarkComponent(markName, toDom);
+    markComponentsCache.set(markName, MarkComponent);
+  }
+
+  return {
+    getNodeComponent(node): FunctionComponent<NodeComponentProps> {
+      const NodeComponent = nodeComponentsCache.get(node.type.name);
+      if (!NodeComponent) {
+        throw new Error('No node component found');
+      }
+      return NodeComponent;
     },
-    serializeMark(mark, inline): FunctionComponent<{}> {
-      return ({ children }) => {
-        const toDom = marks[mark.type.name];
-        if (!toDom) {
-          return null;
-        }
-        const spec = toDom(mark, inline);
-        const element = toReactElement(spec, children);
-        return element;
-      };
+    getMarkComponent(mark): FunctionComponent<MarkComponentProps> {
+      const MarkComponent = markComponentsCache.get(mark.type.name);
+      if (!MarkComponent) {
+        throw new Error('No mark component found');
+      }
+      return MarkComponent;
     },
   };
 }
