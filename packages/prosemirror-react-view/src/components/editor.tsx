@@ -1,6 +1,6 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
-import React, { FunctionComponent, SyntheticEvent } from 'react';
+import React, { memo, NamedExoticComponent } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
@@ -13,32 +13,47 @@ export interface EditorProps {
   plugins?: Plugin[];
 }
 
-const preventDefault = (e: SyntheticEvent) => {
-  e.preventDefault();
-};
+// const preventDefault = (e: SyntheticEvent) => {
+//   e.preventDefault();
+// };
 
-export const Editor: FunctionComponent<EditorProps> = ({ schema, initialDoc, plugins }) => {
-  const [editorState] = useEditorState(schema, initialDoc, plugins);
+export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initialDoc, plugins }) => {
+  const [editorState, apply] = useEditorState(schema, initialDoc, plugins);
   if (!editorState) {
     return null;
   }
+  let index = 0;
   return (
     <DOMSerializerProvider schema={schema}>
       <div
         data-testid="prosemirror-react-view"
         contentEditable={true}
         // TODO: Intercept this and insert text instead
-        onKeyDown={preventDefault}
-        onKeyPress={preventDefault}
-        onKeyUp={preventDefault}
-        onSelect={preventDefault}
+        // onKeyDown={preventDefault}
+        onKeyPress={e => {
+          if (!editorState) {
+            return;
+          }
+
+          const { $from, $to } = editorState.selection;
+          const text = e.key;
+          const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
+
+          apply(tr);
+
+          e.preventDefault();
+        }}
+        // onKeyUp={preventDefault}
+        // onSelect={preventDefault}
         suppressContentEditableWarning
       >
         {/* We dont render root doc because doesnt contain toDOM */}
-        {map(editorState.doc, (child, offset, index) => (
-          <EditorNode node={child} offset={offset} key={index} />
+        {map(editorState.doc, child => (
+          <EditorNode node={child} key={index++} />
         ))}
       </div>
     </DOMSerializerProvider>
   );
-};
+});
+
+Editor.displayName = 'Editor';
