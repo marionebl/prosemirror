@@ -1,6 +1,6 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { EditorState, Plugin, Transaction } from 'prosemirror-state';
-import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
+import React, { KeyboardEvent, memo, NamedExoticComponent, SyntheticEvent } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
@@ -12,6 +12,7 @@ type Command = (tr: Transaction) => void;
 interface PartialEditorView<S extends Schema = any> {
   state: EditorState<S>;
   dispatch: Command;
+  endOfTextblock: () => boolean;
 }
 
 export interface PMEditorProps<S extends Schema = any> {
@@ -20,6 +21,10 @@ export interface PMEditorProps<S extends Schema = any> {
    * Handler for `keypress` events.
    */
   handleKeyPress?: ((view: PartialEditorView<S>, event: KeyboardEvent) => boolean) | null;
+
+  handleTextInput?:
+    | ((view: PartialEditorView<S>, from: number, to: number, text: string) => boolean)
+    | null;
 }
 
 export interface EditorProps {
@@ -32,14 +37,18 @@ const preventDefault = (e: SyntheticEvent) => {
   e.preventDefault();
 };
 
-function someProp(editorState: EditorState, propName: keyof PMEditorProps, cb: Function) {
+function someProp<T extends keyof PMEditorProps>(
+  editorState: EditorState,
+  propName: T,
+  cb: (prop: Exclude<PMEditorProps[T], null | undefined>) => any,
+) {
   const plugins = editorState.plugins;
   if (plugins) {
     for (let i = 0; i < plugins.length; i++) {
       const plugin = plugins[i];
-      const prop = plugin.props[propName] as PMEditorProps[typeof propName];
-      if (prop != null) {
-        const value = cb ? cb(prop) : prop;
+      const prop = plugin.props[propName] as PMEditorProps[T];
+      if (prop !== null && prop !== undefined) {
+        const value = cb ? cb(prop!) : prop;
         if (value) {
           return value;
         }
@@ -57,12 +66,13 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
   return (
     <DOMSerializerProvider schema={schema}>
       <div
+        className="ProseMirror"
         data-testid="prosemirror-react-view"
         contentEditable={true}
         // TODO: Intercept this and insert text instead
         onKeyDown={event => {
           if (
-            someProp(editorState, 'handleKeyDown', (f: Function) =>
+            someProp(editorState, 'handleKeyDown', f =>
               f({ state: editorState, dispatch: apply, endOfTextblock: () => false }, event),
             )
           ) {
@@ -70,13 +80,18 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
           }
         }}
         onKeyPress={event => {
-          const handled = someProp(editorState, 'handleKeyPress', (f: Function) =>
-            f({ state: editorState, dispatch: apply, endOfTextblock: () => false }, event),
+          const { $from, $to } = editorState.selection;
+          const text = event.key;
+          const handled = someProp(editorState, 'handleTextInput', f =>
+            f(
+              { state: editorState, dispatch: apply, endOfTextblock: () => false },
+              $from.pos,
+              $to.pos,
+              text,
+            ),
           );
 
           if (!handled) {
-            const { $from, $to } = editorState.selection;
-            const text = event.key;
             const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
 
             apply(tr);
