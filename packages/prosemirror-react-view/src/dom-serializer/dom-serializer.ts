@@ -187,7 +187,7 @@ function createNodeComponent<P = {}>(
     }
     // if toReact exist pass use that component
     if (toReact) {
-      return createElement(toReact, null, children);
+      return createElement(toReact, { node }, children);
     }
 
     if (deprecatedToDom) {

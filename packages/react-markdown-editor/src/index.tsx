@@ -4,9 +4,9 @@ import { Editor } from '@marduke182/prosemirror-react-view';
 import { exampleSetup } from 'prosemirror-example-setup';
 import { InputRule, inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
-import React, { FunctionComponent } from 'react';
-import { Plugin } from 'prosemirror-state';
 import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
+import React, { FunctionComponent } from 'react';
 
 interface Props {
   md: string;
