@@ -1,31 +1,12 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
-import { EditorState, Plugin, Transaction } from 'prosemirror-state';
-import React, { KeyboardEvent, memo, NamedExoticComponent, SyntheticEvent } from 'react';
+import { EditorState, Plugin } from 'prosemirror-state';
+import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
+import { PMEditorProps } from '../types';
 import { map } from '../utils';
 import { EditorNode } from './editor-node';
-
-type Command = (tr: Transaction) => void;
-
-interface PartialEditorView<S extends Schema = any> {
-  state: EditorState<S>;
-  dispatch: Command;
-  endOfTextblock: () => boolean;
-}
-
-export interface PMEditorProps<S extends Schema = any> {
-  handleKeyDown?: ((view: PartialEditorView<S>, event: KeyboardEvent) => boolean) | null;
-  /**
-   * Handler for `keypress` events.
-   */
-  handleKeyPress?: ((view: PartialEditorView<S>, event: KeyboardEvent) => boolean) | null;
-
-  handleTextInput?:
-    | ((view: PartialEditorView<S>, from: number, to: number, text: string) => boolean)
-    | null;
-}
 
 export interface EditorProps {
   schema: Schema;
@@ -46,7 +27,7 @@ function someProp<T extends keyof PMEditorProps>(
   if (plugins) {
     for (let i = 0; i < plugins.length; i++) {
       const plugin = plugins[i];
-      const prop = plugin.props[propName] as PMEditorProps[T];
+      const prop = (plugin.props as PMEditorProps)[propName];
       if (prop !== null && prop !== undefined) {
         const value = cb ? cb(prop!) : prop;
         if (value) {
@@ -64,7 +45,7 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
   }
   let index = 0;
   return (
-    <DOMSerializerProvider schema={schema}>
+    <DOMSerializerProvider schema={schema} plugins={plugins}>
       <div
         className="ProseMirror"
         data-testid="prosemirror-react-view"

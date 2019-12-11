@@ -1,4 +1,5 @@
 import { Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import React, {
   createContext,
   memo,
@@ -21,20 +22,24 @@ const Context = createContext<DOMSerializer>(DOMSerializerDummy);
 
 interface Props {
   schema: Schema;
+  plugins?: Plugin[];
 }
-const useDOMSerializerFromSchema = <S extends Schema>(schema: S): DOMSerializer<S> | null => {
+const useDOMSerializerFromSchema = <S extends Schema>(
+  schema: S,
+  plugins?: Plugin<S>[],
+): DOMSerializer<S> | null => {
   const [domSerializer, setDomSerializer] = useState<DOMSerializer<S> | null>(null);
 
   useEffect(() => {
-    setDomSerializer(createDomSerializer(schema));
-  }, [schema]);
+    setDomSerializer(createDomSerializer(schema, plugins));
+  }, [schema, plugins]);
 
   return domSerializer;
 };
 
 export const DOMSerializerProvider: NamedExoticComponent<PropsWithChildren<Props>> = memo(
-  ({ schema, children }) => {
-    const domSerializer = useDOMSerializerFromSchema(schema);
+  ({ schema, plugins, children }) => {
+    const domSerializer = useDOMSerializerFromSchema(schema, plugins);
     if (!domSerializer) {
       return null;
     }

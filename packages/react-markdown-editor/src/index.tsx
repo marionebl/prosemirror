@@ -5,6 +5,8 @@ import { exampleSetup } from 'prosemirror-example-setup';
 import { InputRule, inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
 import React, { FunctionComponent } from 'react';
+import { Plugin } from 'prosemirror-state';
+import { Node as ProsemirrorNode } from 'prosemirror-model';
 
 interface Props {
   md: string;
@@ -26,7 +28,22 @@ const rules = [
   headingRule(schema.nodes.heading, 6),
 ];
 
-const plugins = [...exampleSetup({ menuBar: false, schema }), inputRules({ rules })];
+const CustomPragraph: FunctionComponent<{ node: ProsemirrorNode }> = ({ children }) => {
+  return <p className="custom-paragraph">{children}</p>;
+};
+
+const plugins = [
+  ...exampleSetup({ menuBar: false, schema }),
+  inputRules({ rules }),
+  new Plugin({
+    props: {
+      // @ts-ignore
+      toReact: {
+        paragraph: CustomPragraph,
+      },
+    },
+  }),
+];
 
 export const MarkdownEditor: FunctionComponent<Props> = ({ md }) => {
   return <Editor schema={schema} initialDoc={serialize(md || '')} plugins={plugins} />;

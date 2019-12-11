@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { DOMOutputSpec, Mark, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { Plugin } from 'prosemirror-state';
 import {
   Children,
   cloneElement,
+  ComponentType,
   createElement,
   FunctionComponent,
   ReactElement,
   ReactNode,
 } from 'react';
 
+import { PMEditorProps } from '../types';
 import { DOMSerializer, MarkComponentProps, NodeComponentProps } from './types';
 
 type Props = Record<string, any>;
@@ -97,41 +100,103 @@ export function toReactElement(
   return element;
 }
 
-function gatherToDOM<Type extends Mark | ProsemirrorNode>(
-  obj: Record<string, Type['type']>,
-): Record<string, Type['type']['spec']['toDOM']> {
-  const result: Record<string, Type['type']['spec']['toDOM']> = {};
-  for (const name in obj) {
-    if (Object.hasOwnProperty.call(obj, name)) {
-      const toDOM = obj[name].spec.toDOM;
-      if (toDOM) result[name] = toDOM;
+interface ToReactMethods<Type extends Mark | ProsemirrorNode> {
+  deprecatedToDom?: Type['type']['spec']['toDOM'];
+  toReact?: ToReact<Type>;
+}
+
+// interface EditorPropsWithReact<S extends Schema> = CustomEditor<S>
+
+function gatherToDom<Type extends Mark<S> | ProsemirrorNode<S>, S extends Schema>(
+  types: Record<string, Type['type']>,
+  plugins?: Plugin<S>[],
+): Record<string, ToReactMethods<Type>> {
+  const result: Record<string, ToReactMethods<Type>> = {};
+  for (const name in types) {
+    if (Object.hasOwnProperty.call(types, name)) {
+      const toDOM = types[name].spec.toDOM;
+      // const toReact = obj[name].spec.toReact as ToReact<Type>;
+      result[name] = {};
+      if (toDOM) {
+        result[name].deprecatedToDom = toDOM;
+      }
+      //
+      // if (toReact) {
+      //   result[name].toReact = toReact;
+      // }
     }
   }
+
+  if (plugins) {
+    for (const plugin of plugins) {
+      const { toReact } = plugin.props as PMEditorProps;
+      if (toReact) {
+        // Check the toReact function passed by this plugin
+        for (const name in toReact) {
+          // Check if actually exist in our type data
+          if (Object.hasOwnProperty.call(types, name) && Boolean(types[name])) {
+            if (!result[name]) {
+              result[name] = {};
+            }
+            if (!result[name].toReact) {
+              // @ts-ignore
+              result[name].toReact = toReact[name];
+            }
+          }
+        }
+      }
+    }
+  }
+
   return result;
 }
 
-function nodesFromSchema(schema: Schema) {
-  const result = gatherToDOM<ProsemirrorNode>(schema.nodes);
-  if (!result.text) {
-    result.text = (node: ProsemirrorNode) => node.text as string;
+function nodesFromSchema<S extends Schema>(schema: S, plugins?: Plugin<S>[]) {
+  const result = gatherToDom<ProsemirrorNode, S>(schema.nodes, plugins);
+  // If i dont get any render method for text, I need to create a new one
+  if (!result.text.toReact && !result.text.deprecatedToDom) {
+    result.text = {
+      deprecatedToDom: (node: ProsemirrorNode) => node.text as string,
+    };
   }
   return result;
 }
 
-function marksFromSchema(schema: Schema) {
-  return gatherToDOM<Mark>(schema.marks);
+function marksFromSchema<S extends Schema>(schema: S, plugins?: Plugin<S>[]) {
+  return gatherToDom<Mark, S>(schema.marks, plugins);
 }
 
-function createNodeComponent(
+type ToReact<T extends Mark | ProsemirrorNode> = T extends Mark
+  ? MarkComponentType
+  : NodeComponentType;
+export type PropsWithNode<P> = P & NodeComponentProps;
+export type PropsWithMark<P> = P & MarkComponentProps;
+export type NodeComponentType<P = {}> = ComponentType<PropsWithNode<P>>;
+export type MarkComponentType<P = {}> = ComponentType<PropsWithMark<P>>;
+
+function createNodeComponent<P = {}>(
   name: string,
-  toDom?: ProsemirrorNode['type']['spec']['toDOM'],
-): FunctionComponent<NodeComponentProps> {
-  const Component: FunctionComponent<NodeComponentProps> = ({ node, children }) => {
-    if (!toDom) {
-      return null;
+  toReactMethods: ToReactMethods<ProsemirrorNode>,
+): FunctionComponent<PropsWithNode<P>> {
+  const Component: FunctionComponent<PropsWithNode<P>> = ({ node, children: _children }) => {
+    const { deprecatedToDom, toReact } = toReactMethods;
+    // Need to assure at least 1 children for block nodes
+    let children = _children;
+    if (node.isBlock && Children.count(_children) === 0) {
+      children = createElement('br');
     }
-    const spec = toDom(node);
-    return toReactElement(spec, children);
+    // if toReact exist pass use that component
+    if (toReact) {
+      return createElement(toReact, null, children);
+    }
+
+    if (deprecatedToDom) {
+      const spec = deprecatedToDom(node);
+
+      return toReactElement(spec, children);
+    }
+
+    return null;
   };
 
   Component.displayName = name;
@@ -141,13 +206,20 @@ function createNodeComponent(
 
 function createMarkComponent(
   name: string,
-  toDom?: Mark['type']['spec']['toDOM'],
+  toReactMethods: ToReactMethods<Mark>,
 ): FunctionComponent<MarkComponentProps> {
   const MarkComponent: FunctionComponent<MarkComponentProps> = ({ mark, inline, children }) => {
-    if (!toDom) {
+    const { deprecatedToDom, toReact } = toReactMethods;
+    if (!deprecatedToDom && !toReact) {
       return null;
     }
-    const spec = toDom(mark, inline);
+
+    // if toReact is pass use that component
+    if (toReact) {
+      return createElement(toReact, null, children);
+    }
+
+    const spec = deprecatedToDom!(mark, inline);
     return toReactElement(spec, children);
   };
 
@@ -156,15 +228,18 @@ function createMarkComponent(
   return MarkComponent;
 }
 
-export function createDomSerializer<S extends Schema>(schema: S): DOMSerializer<S> {
-  const nodes = nodesFromSchema(schema);
-  const marks = marksFromSchema(schema);
+export function createDomSerializer<S extends Schema>(
+  schema: S,
+  plugin?: Plugin<S>[],
+): DOMSerializer<S> {
+  const nodes = nodesFromSchema(schema, plugin);
+  const marks = marksFromSchema(schema, plugin);
 
   const nodeComponentsCache = new Map<string, FunctionComponent<NodeComponentProps>>();
   const markComponentsCache = new Map<string, FunctionComponent<MarkComponentProps>>();
 
-  for (const [nodeName, toDom] of Object.entries(nodes)) {
-    const NodeComponent = createNodeComponent(nodeName, toDom);
+  for (const [nodeName, toReactMethods] of Object.entries(nodes)) {
+    const NodeComponent = createNodeComponent(nodeName, toReactMethods);
     nodeComponentsCache.set(nodeName, NodeComponent);
   }
 
