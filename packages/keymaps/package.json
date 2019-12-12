@@ -1,7 +1,8 @@
 {
   "name": "@marduke182/keymaps",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {

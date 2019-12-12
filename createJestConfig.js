@@ -7,7 +7,7 @@ module.exports = () => {
         diagnostics: false,
       },
     },
-    testMatch: ['**/__tests__/*.+(ts|tsx|js)'],
+    testMatch: ['**/src/**/__tests__/*.+(ts|tsx|js)', '**/src/**/*.test.+(ts|tsx|js)'],
     moduleDirectories: ['node_modules'],
   };
 };

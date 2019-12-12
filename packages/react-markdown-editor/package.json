@@ -1,7 +1,8 @@
 {
   "name": "@marduke182/react-markdown-editor",
   "version": "1.0.0",
-  "main": "src/index.tsx",
+  "main": "./dist/index.js",
+
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {

@@ -1,7 +1,15 @@
 {
   "extends": "../../tsconfig",
+  "references": [
+    {"path": "../keymaps"},
+    {"path": "../prosemirror-markdown"},
+    {"path": "../prosemirror-react-view"},
+    {"path": "../prosemirror-test-utils"},
+  ],
   "compilerOptions": {
-    "baseUrl": "./"
+    "composite": true,
+    "rootDir": "src/",
+    "outDir": "dist/"
   },
   "include": ["./src/**/*"]
 }
