@@ -1,9 +1,22 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { EditorState, Plugin } from 'prosemirror-state';
-import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
+import React, {
+  createContext,
+  FunctionComponent,
+  memo,
+  NamedExoticComponent,
+  PropsWithChildren,
+  SyntheticEvent,
+  useContext,
+} from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
-import { useEditorState } from '../hooks/useEditor';
+import {
+  EmptyEditorView,
+  ReactEditorView,
+  ReactEditorViewNullable,
+  useEditorState,
+} from '../hooks/useEditor';
 import { PMEditorProps } from '../types';
 import { map } from '../utils';
 import { EditorNode } from './editor-node';
@@ -38,59 +51,86 @@ function someProp<T extends keyof PMEditorProps>(
   }
 }
 
-export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initialDoc, plugins }) => {
-  const [editorState, apply] = useEditorState(schema, initialDoc, plugins);
+const ReactEditorViewContext = createContext<ReactEditorView>(EmptyEditorView);
+
+export const useEditorView = (): ReactEditorView => {
+  return useContext(ReactEditorViewContext);
+};
+
+export const EditorContent: FunctionComponent = () => {
+  const { state: editorState, dispatch } = useEditorView();
   if (!editorState) {
     return null;
   }
   let index = 0;
   return (
-    <DOMSerializerProvider schema={schema} plugins={plugins}>
-      <div
-        className="ProseMirror"
-        data-testid="prosemirror-react-view"
-        contentEditable={true}
-        // TODO: Intercept this and insert text instead
-        onKeyDown={event => {
-          if (
-            someProp(editorState, 'handleKeyDown', f =>
-              f({ state: editorState, dispatch: apply, endOfTextblock: () => false }, event),
-            )
-          ) {
-            event.preventDefault();
-          }
-        }}
-        onKeyPress={event => {
-          const { $from, $to } = editorState.selection;
-          const text = event.key;
-          const handled = someProp(editorState, 'handleTextInput', f =>
-            f(
-              { state: editorState, dispatch: apply, endOfTextblock: () => false },
-              $from.pos,
-              $to.pos,
-              text,
-            ),
-          );
-
-          if (!handled) {
-            const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
-
-            apply(tr);
-          }
-
+    <div
+      className="ProseMirror"
+      data-testid="prosemirror-react-view"
+      contentEditable={true}
+      // TODO: Intercept this and insert text instead
+      onKeyDown={event => {
+        if (
+          someProp(editorState, 'handleKeyDown', f =>
+            f({ state: editorState, dispatch, endOfTextblock: () => false }, event),
+          )
+        ) {
           event.preventDefault();
-        }}
-        onKeyUp={preventDefault}
-        onSelect={preventDefault}
-        suppressContentEditableWarning
-      >
-        {/* We dont render root doc because doesnt contain toDOM */}
-        {map(editorState.doc, child => (
-          <EditorNode node={child} key={index++} />
-        ))}
-      </div>
-    </DOMSerializerProvider>
+        }
+      }}
+      onKeyPress={event => {
+        const { $from, $to } = editorState.selection;
+        const text = event.key;
+        const handled = someProp(editorState, 'handleTextInput', f =>
+          f(
+            { state: editorState, dispatch, endOfTextblock: () => false },
+            $from.pos,
+            $to.pos,
+            text,
+          ),
+        );
+
+        if (!handled) {
+          const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
+
+          dispatch(tr);
+        }
+
+        event.preventDefault();
+      }}
+      onKeyUp={preventDefault}
+      onSelect={preventDefault}
+      suppressContentEditableWarning
+    >
+      {/* We dont render root doc because doesnt contain toDOM */}
+      {map(editorState.doc, child => (
+        <EditorNode node={child} key={index++} />
+      ))}
+    </div>
   );
-});
+};
+
+function isReactEditorView(
+  elem: ReactEditorView | ReactEditorViewNullable,
+): elem is ReactEditorView {
+  return Boolean(elem.state);
+}
+
+export const Editor: NamedExoticComponent<PropsWithChildren<EditorProps>> = memo(
+  ({ schema, initialDoc, plugins, children }) => {
+    const editorView = useEditorState(schema, initialDoc, plugins);
+    if (!isReactEditorView(editorView)) {
+      return null;
+    }
+
+    return (
+      <ReactEditorViewContext.Provider value={editorView}>
+        <DOMSerializerProvider schema={schema} plugins={plugins}>
+          {children}
+        </DOMSerializerProvider>
+      </ReactEditorViewContext.Provider>
+    );
+  },
+);
 
 Editor.displayName = 'Editor';
