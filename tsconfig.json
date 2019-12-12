@@ -53,49 +53,6 @@
     "noUnusedParameters": true,
     "removeComments": false,
     "preserveConstEnums": true,
-    // required to let ts-jest find sibling packages
-    "paths": {
-      "@marduke182/keymaps": [
-        "../../packages/keymaps/src/",
-        "./packages/keymaps/src/"
-      ],
-      "@marduke182/markdown-editor": [
-        "../../packages/markdown-editor/src/",
-        "./packages/markdown-editor/src/"
-      ],
-      "@marduke182/react-markdown-editor": [
-        "../../packages/react-markdown-editor/src/",
-        "./packages/react-markdown-editor/src/"
-      ],
-      "@marduke182/prosemirror-markdown": [
-        "../../packages/prosemirror-markdown/src/",
-        "./prosemirror-markdown/src/"
-      ],
-      "@marduke182/prosemirror-test-utils": [
-        "../../packages/prosemirror-test-utils/src/",
-        "./prosemirror-test-utils/src/"
-      ],
-      "@marduke182/prosemirror-utils": [
-        "../../packages/prosemirror-utils/src/",
-        "./prosemirror-utils/src/"
-      ],
-      "@marduke182/prosemirror-react-view": [
-        "../../packages/prosemirror-react-view/src/",
-        "./prosemirror-react-view/src/"
-      ],
-      "@marduke182/prosemirror-markdown-schema": [
-        "../../packages/prosemirror-markdown-schema/src/",
-        "./prosemirror-markdown-schema/src/"
-      ],
-      "@marduke182/prosemirror-markdown-serializer": [
-        "../../packages/prosemirror-markdown-serializer/src/",
-        "./prosemirror-markdown-serializer/src/"
-      ],
-      "@marduke182/prosemirror-schema-builder": [
-        "../../packages/prosemirror-schema-builder/src/",
-        "./prosemirror-schema-builder/src/"
-      ]
-    }
   },
   "files": [
     "./node_modules/@testing-library/jest-dom/extend-expect.d.ts"

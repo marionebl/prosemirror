@@ -9,5 +9,8 @@ module.exports = () => {
     },
     testMatch: ['**/src/**/__tests__/*.+(ts|tsx|js)', '**/src/**/*.test.+(ts|tsx|js)'],
     moduleDirectories: ['node_modules'],
+    moduleNameMapper: {
+      '^@marduke182/(.*)$': '<rootDir>/../$1/src',
+    },
   };
 };
