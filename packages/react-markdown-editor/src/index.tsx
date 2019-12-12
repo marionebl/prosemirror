@@ -1,5 +1,6 @@
 import { schema, serialize } from '@marduke182/prosemirror-markdown';
 import { Editor } from '@marduke182/prosemirror-react-view';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { exampleSetup } from 'prosemirror-example-setup';
 import { InputRule, inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
@@ -37,6 +38,7 @@ const plugins = [
   inputRules({ rules }),
   new Plugin({
     props: {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       toReact: {
         paragraph: CustomPragraph,
