@@ -34,7 +34,7 @@ const CustomPragraph: FunctionComponent<{ node: ProsemirrorNode }> = ({ children
 };
 
 const plugins = [
-  ...exampleSetup({ menuBar: false, schema }),
+  ...exampleSetup({ menuBar: true, schema }),
   inputRules({ rules }),
   new Plugin({
     props: {

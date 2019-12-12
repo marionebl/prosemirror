@@ -2,7 +2,7 @@
   "name": "@marduke182/keymaps",
   "version": "1.0.0",
   "main": "./dist/index.js",
-
+  "main:ts": "./src/index.ts",
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {

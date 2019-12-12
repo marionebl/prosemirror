@@ -8,6 +8,7 @@ module.exports = async ({ config }) => {
   });
 
   config.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.mainFields =['main:ts', 'browser', 'module', 'main'];
 
   return config;
 };
