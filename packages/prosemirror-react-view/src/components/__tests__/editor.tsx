@@ -16,7 +16,7 @@ Hello *world* how __are__
 1. first
 2. second
    1. second first
-   
+
 \`\`\`javascript
 function tmp() {}
 \`\`\`
@@ -26,7 +26,7 @@ function tmp() {}
 ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 `);
 
-test('should render a react view', async () => {
+test.skip('should render a react view', async () => {
   const { findByText } = render(<Editor schema={schema} initialDoc={emptyDocument} />);
 
   // await waitForElement(() => findByText(/Hello/i));
