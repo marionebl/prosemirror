@@ -5,7 +5,7 @@ import React, { memo, NamedExoticComponent, SyntheticEvent } from 'react';
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { useEditorState } from '../hooks/useEditor';
 import { PMEditorProps } from '../types';
-import { map } from '../utils';
+import { getNodeKey, map } from '../utils';
 import { EditorNode } from './editor-node';
 
 export interface EditorProps {
@@ -43,7 +43,6 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
   if (!editorState) {
     return null;
   }
-  let index = 0;
   return (
     <DOMSerializerProvider schema={schema} plugins={plugins}>
       <div
@@ -78,18 +77,17 @@ export const Editor: NamedExoticComponent<EditorProps> = memo(({ schema, initial
             apply(tr);
           }
 
-          event.preventDefault();
-        }}
-        onKeyUp={preventDefault}
-        onSelect={preventDefault}
-        suppressContentEditableWarning
-      >
-        {/* We dont render root doc because doesnt contain toDOM */}
-        {map(editorState.doc, child => (
-          <EditorNode node={child} key={index++} />
-        ))}
-      </div>
-    </DOMSerializerProvider>
+        event.preventDefault();
+      }}
+      onKeyUp={preventDefault}
+      onSelect={preventDefault}
+      suppressContentEditableWarning
+    >
+      {/* We dont render root doc because doesn't contain toDOM */}
+      {map(editorState.doc, child => (
+        <EditorNode node={child} key={getNodeKey(child)} />
+      ))}
+    </div>
   );
 });
 
