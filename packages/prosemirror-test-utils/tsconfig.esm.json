@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./esm/esm",
+    "outDir": "./dist/esm",
   },
   "include": ["./src/**/*"]
 }
