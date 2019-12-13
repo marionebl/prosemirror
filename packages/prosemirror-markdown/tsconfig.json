@@ -10,7 +10,7 @@
     "composite": true,
     "jsxFactory": "createElement",
     "rootDir": "src/",
-    "outDir": "dist/"
+    "outDir": "./dist/commonjs",
   },
   "include": ["./src/**/*"]
 }

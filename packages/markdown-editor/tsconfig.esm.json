@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.esm",
+  "references": [
+    { "path": "../keymaps/tsconfig.esm.json" },
+    { "path": "../prosemirror-markdown/tsconfig.esm.json" },
+    { "path": "../prosemirror-react-view/tsconfig.esm.json" },
+    { "path": "../prosemirror-test-utils/tsconfig.esm.json" }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src/",
+    "outDir": "./dist/esm",
+  },
+  "include": ["./src/**/*"]
+}

@@ -1,9 +1,9 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig.esm",
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "dist/"
+    "outDir": "./dist/commonjs",
   },
   "include": ["./src/**/*"]
 }

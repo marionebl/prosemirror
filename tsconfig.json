@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.shared",
   "references": [
     {
       "path": "./packages/keymaps"
@@ -38,21 +39,7 @@
     }
   ],
   "compilerOptions": {
-    "composite": true,
-    "module": "commonjs",
-    "target": "esnext",
-    "jsx": "react",
-    "lib": ["dom", "es2015", "es2017"],
-    "strict": true,
-    "downlevelIteration": true,
-    "isolatedModules": false,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": false,
-    "preserveConstEnums": true,
+    "module": "commonjs"
   },
   "files": [
     "./node_modules/@testing-library/jest-dom/extend-expect.d.ts"

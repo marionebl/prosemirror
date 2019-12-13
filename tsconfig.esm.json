@@ -1,0 +1,47 @@
+{
+  "extends": "./tsconfig.shared",
+  "references": [
+    {
+      "path": "./packages/keymaps/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/markdown-editor/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-markdown/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-markdown-schema/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-markdown-serializer/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-markdown-serializer/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-react-view/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-schema-builder/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/prosemirror-utils/tsconfig.esm.json"
+    },
+    {
+      "path": "./packages/react-markdown-editor/tsconfig.esm.json"
+    },
+    {
+      "path": "./storybooks/markdown-editor"
+    },
+    {
+      "path": "./storybooks/react-editor"
+    }
+  ],
+  "compilerOptions": {
+    "module": "esnext"
+  },
+  "files": [
+    "./node_modules/@testing-library/jest-dom/extend-expect.d.ts"
+  ]
+}
