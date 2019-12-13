@@ -18,7 +18,7 @@ import {
   useEditorState,
 } from '../hooks/useEditor';
 import { PMEditorProps } from '../types';
-import { map } from '../utils';
+import { getNodeKey, map } from '../utils';
 import { EditorNode } from './editor-node';
 
 export interface EditorProps {
@@ -62,7 +62,6 @@ export const EditorContent: FunctionComponent = () => {
   if (!editorState) {
     return null;
   }
-  let index = 0;
   return (
     <div
       className="ProseMirror"
@@ -102,9 +101,9 @@ export const EditorContent: FunctionComponent = () => {
       onSelect={preventDefault}
       suppressContentEditableWarning
     >
-      {/* We dont render root doc because doesnt contain toDOM */}
+      {/* We dont render root doc because doesn't contain toDOM */}
       {map(editorState.doc, child => (
-        <EditorNode node={child} key={index++} />
+        <EditorNode node={child} key={getNodeKey(child)} />
       ))}
     </div>
   );

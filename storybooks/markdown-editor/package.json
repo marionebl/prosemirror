@@ -11,7 +11,6 @@
     "@types/prosemirror-model": "^1.7.2",
     "@types/prosemirror-state": "^1.2.3",
     "@types/prosemirror-view": "^1.11.2",
-    "awesome-typescript-loader": "^5.2.1",
     "prosemirror-example-setup": "^1.0.1",
     "prosemirror-model": "^1.7.3",
     "prosemirror-schema-basic": "^1.0.1",
@@ -25,6 +24,7 @@
     "@babel/core": "^7.6.2",
     "@storybook/html": "^5.2.1",
     "babel-loader": "^8.0.6",
+    "ts-loader": "^6.2.1",
     "webpack": "^4.41.0"
   },
   "scripts": {

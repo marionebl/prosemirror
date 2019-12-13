@@ -1,12 +1,12 @@
 {
-  "extends": "../../tsconfig",
+  "extends": "../../tsconfig.esm",
   "references": [
-    { "path": "../prosemirror-utils" }
+    { "path": "../prosemirror-schema-builder/tsconfig.esm.json" }
   ],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/commonjs",
+    "outDir": "./dist/esm",
   },
   "include": ["./src/**/*"]
 }

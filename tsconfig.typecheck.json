@@ -1,13 +1,6 @@
 {
-  "extends": "./tsconfig",
-  "include": [
-    "./packages/**/*"
-  ],
-  "exclude": [
-    "**/node_modules",
-    "node_modules"
-  ],
+  "extends": "./tsconfig.shared",
   "compilerOptions": {
-    "baseUrl": "./"
+    "noEmit": true
   }
 }

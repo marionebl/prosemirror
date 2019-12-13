@@ -139,6 +139,7 @@ function gatherToDom<Type extends Mark<S> | ProsemirrorNode<S>, S extends Schema
               result[name] = {};
             }
             if (!result[name].toReact) {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
               // @ts-ignore
               result[name].toReact = toReact[name];
             }

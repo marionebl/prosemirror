@@ -1,9 +1,9 @@
 {
   "name": "@marduke182/prosemirror-react-view",
   "version": "1.0.0",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "main:ts": "./src/index.ts",
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {

@@ -1,8 +1,16 @@
 {
   "extends": "../../tsconfig",
+  "references": [
+    { "path": "../keymaps" },
+    { "path": "../prosemirror-markdown-schema" },
+    { "path": "../prosemirror-markdown-serializer" },
+    { "path": "../prosemirror-test-utils" }
+  ],
   "compilerOptions": {
+    "composite": true,
     "jsxFactory": "createElement",
-    "baseUrl": "./"
+    "rootDir": "src/",
+    "outDir": "./dist/commonjs",
   },
   "include": ["./src/**/*"]
 }

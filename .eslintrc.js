@@ -29,7 +29,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/camelcase': 'off',
     // import plugin
-    'import/no-unresolved': [2, { commonjs: true, amd: true }],
+    'import/no-unresolved': 'off',
     'import/named': 2,
     'import/no-cycle': 2,
     'import/order': [

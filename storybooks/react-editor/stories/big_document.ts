@@ -1,4 +1,3 @@
-
 export default `
 hi
 
@@ -3574,4 +3573,3 @@ However much I wanted to, I couldn’t really follow through.  Even as I tremble
 
 I was going to be a superhero.  That was the goal I used to calm myself down at moments like these.  It was what I used to make myself get out of bed on a school day.  It was a crazy dream that made things tolerable.  It was something to look forward to, something to work towards.  It made it possible to keep from dwelling on the fact that Emma Barnes, leader of the trio, had once been my best friend.
 `;
-
