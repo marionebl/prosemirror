@@ -1,5 +1,5 @@
 import { schema, serialize } from '@marduke182/prosemirror-markdown';
-import { Editor } from '@marduke182/prosemirror-react-view';
+import { Editor, EditorContent } from '@marduke182/prosemirror-react-view';
 // @ts-ignore
 import { exampleSetup } from 'prosemirror-example-setup';
 import { InputRule, inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
@@ -46,5 +46,9 @@ const plugins = [
 ];
 
 export const MarkdownEditor: FunctionComponent<Props> = ({ md }) => {
-  return <Editor schema={schema} initialDoc={serialize(md || '')} plugins={plugins} />;
+  return (
+    <Editor schema={schema} initialDoc={serialize(md || '')} plugins={plugins}>
+      <EditorContent />
+    </Editor>
+  );
 };
