@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig",
-  "references": [
-    {"path": "../prosemirror-markdown"}
-  ],
+  "references": [{ "path": "../../packages/prosemirror-markdown" }],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/commonjs",
+    "outDir": "./dist/commonjs"
   },
   "include": ["./src/**/*"]
 }

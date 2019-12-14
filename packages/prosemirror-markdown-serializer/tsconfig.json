@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig",
   "references": [
-    { "path": "../prosemirror-markdown-schema" },
-    { "path": "../prosemirror-test-utils" },
-    { "path": "../prosemirror-utils" }
+    { "path": "../../packages/prosemirror-markdown-schema" },
+    { "path": "../../packages/prosemirror-test-utils" },
+    { "path": "../../packages/prosemirror-utils" }
   ],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/commonjs",
+    "outDir": "./dist/commonjs"
   },
   "include": ["./src/**/*"]
 }

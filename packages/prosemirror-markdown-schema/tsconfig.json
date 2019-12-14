@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig",
-  "references": [
-    { "path": "../prosemirror-schema-builder" }
-  ],
+  "references": [{ "path": "../../packages/prosemirror-schema-builder" }],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/commonjs",
+    "outDir": "./dist/commonjs"
   },
   "include": ["./src/**/*"]
 }

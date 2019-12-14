@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig.esm",
   "references": [
-    { "path": "../prosemirror-markdown-schema/tsconfig.esm.json" },
-    { "path": "../prosemirror-test-utils/tsconfig.esm.json" },
-    { "path": "../prosemirror-utils/tsconfig.esm.json" }
+    { "path": "../../packages/prosemirror-markdown-schema/tsconfig.esm.json" },
+    { "path": "../../packages/prosemirror-test-utils/tsconfig.esm.json" },
+    { "path": "../../packages/prosemirror-utils/tsconfig.esm.json" }
   ],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/esm",
+    "outDir": "./dist/esm"
   },
   "include": ["./src/**/*"]
 }

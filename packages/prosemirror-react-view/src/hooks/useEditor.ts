@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 
 export type Dispatch = (tr: Transaction) => void;
 
-export interface ReactEditorView {
-  state: EditorState;
+export interface ReactEditorView<S extends Schema = any> {
+  state: EditorState<S>;
   dispatch: Dispatch;
+  subscribe: (sb: StateSubscription) => StateUnsubscribe;
 }
 
 export interface ReactEditorViewNullable {
@@ -14,32 +15,48 @@ export interface ReactEditorViewNullable {
   dispatch: Dispatch;
 }
 
-export const EmptyEditorView: ReactEditorView = {
-  state: {} as EditorState,
-  dispatch: () => {},
-};
+export type StateSubscription = <S extends Schema = any>(state: EditorState<S>) => void;
+type StateUnsubscribe = () => void;
 
-export const useEditorState = <S extends Schema>(
+export class EditorView<S extends Schema = any> implements ReactEditorView<S> {
+  private listeners = new Set<StateSubscription>();
+  state: EditorState;
+
+  constructor(state: EditorState) {
+    this.state = state;
+  }
+
+  dispatch = (tr: Transaction) => {
+    if (this.state) {
+      this.state = this.state.apply(tr);
+      this.notifySubscribers();
+    }
+  };
+
+  private notifySubscribers() {
+    this.listeners.forEach(cb => cb(this.state));
+  }
+
+  subscribe(cb: StateSubscription) {
+    cb(this.state);
+    this.listeners.add(cb);
+    return () => {
+      this.listeners.delete(cb);
+    };
+  }
+}
+
+export const useEditor = <S extends Schema>(
   schema: S,
   initialDoc?: ProsemirrorNode<S>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plugins?: Plugin<any, S>[],
-): ReactEditorViewNullable => {
-  const [editorState, setEditorState] = useState<EditorState<S> | null>(null);
+): ReactEditorView | null => {
+  const [editorView, setEditorView] = useState<EditorView<S> | null>(null);
 
   useEffect(() => {
-    setEditorState(EditorState.create({ schema, plugins, doc: initialDoc }));
+    setEditorView(new EditorView(EditorState.create({ schema, plugins, doc: initialDoc })));
   }, [schema, plugins, initialDoc]);
 
-  const apply: Dispatch = (tr: Transaction) => {
-    if (editorState) {
-      const newState = editorState.apply(tr);
-      setEditorState(newState);
-    }
-  };
-
-  return {
-    state: editorState,
-    dispatch: apply,
-  };
+  return editorView;
 };

@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig.esm",
-  "references": [
-    { "path": "../prosemirror-schema-builder/tsconfig.esm.json" }
-  ],
+  "references": [{ "path": "../../packages/prosemirror-schema-builder/tsconfig.esm.json" }],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/esm",
+    "outDir": "./dist/esm"
   },
   "include": ["./src/**/*"]
 }

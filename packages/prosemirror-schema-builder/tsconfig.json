@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig",
-  "references": [
-    { "path": "../prosemirror-utils" }
-  ],
+  "references": [{ "path": "../../packages/prosemirror-utils" }],
   "compilerOptions": {
     "composite": true,
     "rootDir": "src/",
-    "outDir": "./dist/commonjs",
+    "outDir": "./dist/commonjs"
   },
   "include": ["./src/**/*"]
 }

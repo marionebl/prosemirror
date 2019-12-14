@@ -3,22 +3,21 @@ import { EditorState, Plugin } from 'prosemirror-state';
 import React, {
   createContext,
   FunctionComponent,
+  KeyboardEvent,
   memo,
   NamedExoticComponent,
   PropsWithChildren,
   SyntheticEvent,
+  useCallback,
   useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
-import {
-  EmptyEditorView,
-  ReactEditorView,
-  ReactEditorViewNullable,
-  useEditorState,
-} from '../hooks/useEditor';
+import { ReactEditorView, useEditor } from '../hooks/useEditor';
 import { PMEditorProps } from '../types';
-import { getNodeKey, map } from '../utils';
+import { map } from '../utils';
 import { EditorNode } from './editor-node';
 
 export interface EditorProps {
@@ -51,74 +50,130 @@ function someProp<T extends keyof PMEditorProps>(
   }
 }
 
-const ReactEditorViewContext = createContext<ReactEditorView>(EmptyEditorView);
+const ReactEditorViewContext = createContext<ReactEditorView | null>(null);
 
-export const useEditorView = (): ReactEditorView => {
+export const useEditorView = (): ReactEditorView | null => {
   return useContext(ReactEditorViewContext);
 };
 
-export const EditorContent: FunctionComponent = () => {
-  const { state: editorState, dispatch } = useEditorView();
-  if (!editorState) {
+export const useEditorState = (): EditorState | null => {
+  const editorView = useEditorView();
+  const [state, setState] = useState<EditorState | null>(null);
+
+  useEffect(() => {
+    function subscribeToEditorView(newState: EditorState) {
+      setState(newState);
+    }
+    let unsubscribe = () => {};
+    if (editorView) {
+      unsubscribe = editorView.subscribe(subscribeToEditorView);
+    }
+
+    return () => unsubscribe();
+  }, [editorView]);
+
+  return state;
+};
+
+const EditorContentRenderer: FunctionComponent = memo(() => {
+  const state = useEditorState();
+
+  if (!state) {
     return null;
   }
+
+  let index = 0;
+  return (
+    <>
+      {/* We dont render root doc because doesn't contain toDOM */}
+      {map(state.doc, child => (
+        <EditorNode node={child} key={index++} />
+      ))}
+    </>
+  );
+});
+
+EditorContentRenderer.displayName = 'EditorContentRenderer';
+
+export const EditorContent: FunctionComponent = memo(() => {
+  const editorView = useEditorView();
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (!editorView) {
+        return;
+      }
+      if (
+        someProp(editorView.state, 'handleKeyDown', f =>
+          f(
+            {
+              state: editorView.state,
+              dispatch: editorView.dispatch,
+              endOfTextblock: () => false,
+            },
+            event,
+          ),
+        )
+      ) {
+        event.preventDefault();
+      }
+    },
+    [editorView],
+  );
+
+  const handleKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (!editorView) {
+        return;
+      }
+      const { $from, $to } = editorView.state.selection;
+      const text = event.key;
+      const handled = someProp(editorView.state, 'handleTextInput', f =>
+        f(
+          { state: editorView.state, dispatch: editorView.dispatch, endOfTextblock: () => false },
+          $from.pos,
+          $to.pos,
+          text,
+        ),
+      );
+
+      if (!handled) {
+        const tr = editorView.state.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
+
+        editorView.dispatch(tr);
+      }
+
+      event.preventDefault();
+    },
+    [editorView],
+  );
+
+  if (!editorView) {
+    return null;
+  }
+
   return (
     <div
       className="ProseMirror"
       data-testid="prosemirror-react-view"
       contentEditable={true}
-      // TODO: Intercept this and insert text instead
-      onKeyDown={event => {
-        if (
-          someProp(editorState, 'handleKeyDown', f =>
-            f({ state: editorState, dispatch, endOfTextblock: () => false }, event),
-          )
-        ) {
-          event.preventDefault();
-        }
-      }}
-      onKeyPress={event => {
-        const { $from, $to } = editorState.selection;
-        const text = event.key;
-        const handled = someProp(editorState, 'handleTextInput', f =>
-          f(
-            { state: editorState, dispatch, endOfTextblock: () => false },
-            $from.pos,
-            $to.pos,
-            text,
-          ),
-        );
-
-        if (!handled) {
-          const tr = editorState.tr.insertText(text, $from.pos, $to.pos).scrollIntoView();
-
-          dispatch(tr);
-        }
-
-        event.preventDefault();
-      }}
+      onKeyDown={handleKeyDown}
+      onKeyPress={handleKeyPress}
       onKeyUp={preventDefault}
       onSelect={preventDefault}
       suppressContentEditableWarning
     >
-      {/* We dont render root doc because doesn't contain toDOM */}
-      {map(editorState.doc, child => (
-        <EditorNode node={child} key={getNodeKey(child)} />
-      ))}
+      <EditorContentRenderer />
     </div>
   );
-};
+});
 
-function isReactEditorView(
-  elem: ReactEditorView | ReactEditorViewNullable,
-): elem is ReactEditorView {
-  return Boolean(elem.state);
-}
+EditorContent.displayName = 'EditorContent';
 
 export const Editor: NamedExoticComponent<PropsWithChildren<EditorProps>> = memo(
   ({ schema, initialDoc, plugins, children }) => {
-    const editorView = useEditorState(schema, initialDoc, plugins);
-    if (!isReactEditorView(editorView)) {
+    const editorView = useEditor(schema, initialDoc, plugins);
+    if (!editorView) {
       return null;
     }
 

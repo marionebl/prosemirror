@@ -1,7 +1,39 @@
 {
   "extends": "../../tsconfig",
   "references": [
-    {"path": "../../packages/react-markdown-editor"},
+    {
+      "path": "../../packages/keymaps"
+    },
+    {
+      "path": "../../packages/markdown-editor"
+    },
+    {
+      "path": "../../packages/prosemirror-markdown"
+    },
+    {
+      "path": "../../packages/prosemirror-markdown-schema"
+    },
+    {
+      "path": "../../packages/prosemirror-markdown-serializer"
+    },
+    {
+      "path": "../../packages/prosemirror-markdown-serializer"
+    },
+    {
+      "path": "../../packages/prosemirror-react-view"
+    },
+    {
+      "path": "../../packages/prosemirror-schema-builder"
+    },
+    {
+      "path": "../../packages/prosemirror-utils"
+    },
+    {
+      "path": "../../packages/react-markdown-editor"
+    },
+    {
+      "path": "../../storybooks/markdown-editor"
+    }
   ],
   "compilerOptions": {
     "composite": true
