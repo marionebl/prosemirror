@@ -1,7 +1,9 @@
 {
   "name": "@marduke182/prosemirror-markdown-schema",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "main:ts": "./src/index.ts",
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {

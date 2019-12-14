@@ -23,7 +23,10 @@ module.exports = async ({ config, mode }) => {
   //
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
-    loader: require.resolve('awesome-typescript-loader'),
+    loader: require.resolve('ts-loader'),
+    options: {
+      projectReferences: true
+    }
   });
 
   // config.module.rules.push({

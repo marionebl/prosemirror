@@ -1,14 +1,16 @@
 {
   "name": "@marduke182/prosemirror-react-view",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "main:ts": "./src/index.ts",
   "author": "Jesús Q",
   "license": "MIT",
   "dependencies": {
     "@types/prosemirror-model": "^1.7.2",
     "@types/prosemirror-state": "^1.2.3",
-    "prosemirror-model": "^1.7.4",
-    "prosemirror-state": "^1.2.4"
+    "prosemirror-model": "^1.7.0",
+    "prosemirror-state": "^1.2.2"
   },
   "devDependencies": {
     "@marduke182/prosemirror-markdown": "^1.0.0",

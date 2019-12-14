@@ -1,42 +1,42 @@
 import { Node as ProsemirrorNode } from 'prosemirror-model';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { memo, NamedExoticComponent, useMemo } from 'react';
 
 import { useDOMSerializer } from '../dom-serializer/context';
 import { map } from '../utils';
 
 type Props = {
   node: ProsemirrorNode;
-  offset: number;
 };
 
-function useReactNode(node: ProsemirrorNode, offset: number): React.ReactElement | null {
+export const EditorNode: NamedExoticComponent<Props> = memo(({ node }) => {
   const domSerializer = useDOMSerializer();
-  const [Element, setElement] = useState<React.ReactElement | null>(null);
 
-  useEffect(() => {
-    const Component = domSerializer.serializeNode(node);
+  return useMemo(() => {
+    let index = 0; // TODO: need to figure out a better way to persist this key for each same node
+    const NodeComponent = domSerializer.getNodeComponent(node);
 
     // Create children nodes
-    const children = map(node, (child, childOffset, index) => {
-      return <EditorNode node={child} offset={offset + childOffset} key={index} />;
+    const children = map(node, child => {
+      return <EditorNode node={child} key={index++} />;
     });
 
     // Create wrapper based on node component
-    let Wrapper = <Component>{children}</Component>;
+    let Wrapper = <NodeComponent node={node}>{children}</NodeComponent>;
 
     // Wrap node component with the marks
     for (let i = node.marks.length - 1; i >= 0; i--) {
-      const Mark = domSerializer.serializeMark(node.marks[i], node.isInline);
-      Wrapper = <Mark>{Wrapper}</Mark>;
+      const mark = node.marks[i];
+      const Mark = domSerializer.getMarkComponent(node.marks[i]);
+      Wrapper = (
+        <Mark mark={mark} inline={node.isInline}>
+          {Wrapper}
+        </Mark>
+      );
     }
 
     // Set final element
-    setElement(Wrapper);
-  }, [node, offset, domSerializer]);
+    return Wrapper;
+  }, [node, domSerializer]);
+});
 
-  return Element;
-}
-
-export const EditorNode: FunctionComponent<Props> = ({ node, offset }) => {
-  return useReactNode(node, offset);
-};
+EditorNode.displayName = 'EditorNode';

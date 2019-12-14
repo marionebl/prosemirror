@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.esm",
+  "references": [
+    { "path": "../../packages/keymaps/tsconfig.esm.json" },
+    { "path": "../../packages/prosemirror-markdown-schema/tsconfig.esm.json" },
+    { "path": "../../packages/prosemirror-markdown-serializer/tsconfig.esm.json" },
+    { "path": "../../packages/prosemirror-test-utils/tsconfig.esm.json" }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "jsxFactory": "createElement",
+    "rootDir": "src/",
+    "outDir": "./dist/esm"
+  },
+  "include": ["./src/**/*"]
+}

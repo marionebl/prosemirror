@@ -1,13 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "clean": "git clean -x -e node_modules -e .idea -d -f",
+    "clean": "yarn clean:cjs && yarn clean:esm",
+    "clean:cjs": "yarn build:cjs --clean",
+    "clean:esm": "yarn build:esm --clean",
     "build": "yarn build:cjs && yarn build:esm",
-    "build:cjs": "yarn workspaces run tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs",
-    "build:esm": "yarn workspaces run tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext",
+    "build:cjs": "yarn tsc -b",
+    "build:esm": "yarn tsc -b tsconfig.esm.json",
     "lint": "jest --config jest.eslint.config.js",
     "test": "jest",
-    "typecheck": "tsc --noEmit --project ./tsconfig.typecheck.json"
+    "typecheck": "tsc -b tsconfig.typecheck.json "
   },
   "workspaces": [
     "packages/*",

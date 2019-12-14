@@ -1,6 +1,9 @@
 {
   "extends": "../../tsconfig",
+  "references": [
+    {"path": "../../packages/markdown-editor"},
+  ],
   "compilerOptions": {
-    "baseUrl": "./"
+    "composite": true
   }
 }
