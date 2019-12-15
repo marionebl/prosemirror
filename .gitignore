@@ -65,4 +65,4 @@ bundle-stats.json
 # Mac
 .DS_Store
 
-tsconfig.tsbuildinfo
+tsconfig*.tsbuildinfo
