@@ -5,6 +5,8 @@ import { Plugin } from 'prosemirror-state';
 import {
   Children,
   cloneElement,
+  Component,
+  ComponentClass,
   ComponentType,
   createElement,
   FunctionComponent,
@@ -175,34 +177,43 @@ export type PropsWithMark<P> = P & MarkComponentProps;
 export type NodeComponentType<P = {}> = ComponentType<PropsWithNode<P>>;
 export type MarkComponentType<P = {}> = ComponentType<PropsWithMark<P>>;
 
-function createNodeComponent<P = {}>(
+function createNodeComponent(
   name: string,
   toReactMethods: ToReactMethods<ProsemirrorNode>,
-): FunctionComponent<PropsWithNode<P>> {
-  const Component: FunctionComponent<PropsWithNode<P>> = ({ node, children: _children }) => {
-    const { deprecatedToDom, toReact } = toReactMethods;
-    // Need to assure at least 1 children for block nodes
-    let children = _children;
-    if (node.isBlock && Children.count(_children) === 0) {
-      children = createElement('br');
-    }
-    // if toReact exist pass use that component
-    if (toReact) {
-      return createElement(toReact, { node }, children);
+): ComponentClass<NodeComponentProps> {
+  class NodeComponent extends Component<NodeComponentProps> {
+    componentDidMount() {
+      this.props.nodeRef && this.props.nodeRef(this);
     }
 
-    if (deprecatedToDom) {
-      const spec = deprecatedToDom(node);
+    render() {
+      const { node, children: _children } = this.props;
+      const { deprecatedToDom, toReact } = toReactMethods;
+      // Need to assure at least 1 children for block nodes
+      let children = _children;
+      if (node.isBlock && Children.count(_children) === 0) {
+        children = createElement('br');
+      }
+      // if toReact exist pass use that component
+      if (toReact) {
+        return createElement(toReact, { node }, children);
+      }
 
-      return toReactElement(spec, children);
+      if (deprecatedToDom) {
+        const spec = deprecatedToDom(node);
+
+        return toReactElement(spec, children);
+      }
+
+      return null;
     }
+  }
 
-    return null;
-  };
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  NodeComponent.displayName = name;
 
-  Component.displayName = name;
-
-  return Component;
+  return NodeComponent;
 }
 
 function createMarkComponent(
@@ -236,7 +247,7 @@ export function createDomSerializer<S extends Schema>(
   const nodes = nodesFromSchema(schema, plugin);
   const marks = marksFromSchema(schema, plugin);
 
-  const nodeComponentsCache = new Map<string, FunctionComponent<NodeComponentProps>>();
+  const nodeComponentsCache = new Map<string, ComponentClass<NodeComponentProps>>();
   const markComponentsCache = new Map<string, FunctionComponent<MarkComponentProps>>();
 
   for (const [nodeName, toReactMethods] of Object.entries(nodes)) {
@@ -250,7 +261,7 @@ export function createDomSerializer<S extends Schema>(
   }
 
   return {
-    getNodeComponent(node): FunctionComponent<NodeComponentProps> {
+    getNodeComponent(node): ComponentClass<NodeComponentProps> {
       const NodeComponent = nodeComponentsCache.get(node.type.name);
       if (!NodeComponent) {
         throw new Error('No node component found');

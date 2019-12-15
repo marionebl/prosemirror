@@ -1,6 +1,7 @@
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, {
+  ComponentType,
   createContext,
   FunctionComponent,
   KeyboardEvent,
@@ -11,11 +12,15 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from 'react';
 
 import { DOMSerializerProvider } from '../dom-serializer/context';
 import { ReactEditorView, useEditor } from '../hooks/useEditor';
+import { ViewDesc } from '../selection/types';
+import { createViewDesc, updateViewDesc } from '../selection/view-desc';
 import { PMEditorProps } from '../types';
 import { map } from '../utils';
 import { EditorNode } from './editor-node';
@@ -75,25 +80,49 @@ export const useEditorState = (): EditorState | null => {
   return state;
 };
 
-const EditorContentRenderer: FunctionComponent = memo(() => {
-  const state = useEditorState();
+export function useViewDesc(node: ProsemirrorNode, parent?: ViewDesc) {
+  const viewDesc = useRef(createViewDesc(node, parent));
 
-  if (!state) {
-    return null;
-  }
+  useMemo(() => {
+    viewDesc.current = updateViewDesc(viewDesc.current, node);
+  }, [node]);
 
+  return viewDesc;
+}
+
+const Renderer: FunctionComponent<{ doc: ProsemirrorNode }> = memo(({ doc }) => {
+  const viewDesc = useViewDesc(doc);
+  
   let index = 0;
   return (
     <>
       {/* We dont render root doc because doesn't contain toDOM */}
-      {map(state.doc, child => (
-        <EditorNode node={child} key={index++} />
+      {map(doc, child => (
+        <EditorNode node={child} viewDesc={viewDesc.current} key={index++} />
       ))}
     </>
   );
 });
 
-EditorContentRenderer.displayName = 'EditorContentRenderer';
+Renderer.displayName = 'Renderer';
+
+function withStateDoc(WrapperComponent: ComponentType<{ doc: ProsemirrorNode }>) {
+  const WithStateDoc: FunctionComponent = memo(() => {
+    const state = useEditorState();
+
+    if (!state || !state.doc) {
+      return null;
+    }
+
+    return <WrapperComponent doc={state.doc} />;
+  });
+
+  WithStateDoc.displayName = `withStateDoc(${WrapperComponent.displayName})`;
+
+  return WithStateDoc;
+}
+
+const RendererWithDoc = withStateDoc(Renderer);
 
 export const EditorContent: FunctionComponent = memo(() => {
   const editorView = useEditorView();
@@ -163,7 +192,7 @@ export const EditorContent: FunctionComponent = memo(() => {
       onSelect={preventDefault}
       suppressContentEditableWarning
     >
-      <EditorContentRenderer />
+      <RendererWithDoc />
     </div>
   );
 });

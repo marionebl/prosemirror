@@ -1,6 +1,7 @@
 import { Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import React, {
+  Component,
   createContext,
   memo,
   NamedExoticComponent,
@@ -11,10 +12,16 @@ import React, {
 } from 'react';
 
 import { createDomSerializer } from './dom-serializer';
-import { DOMSerializer } from './types';
+import { DOMSerializer, NodeComponentProps } from './types';
+
+class Error extends Component<NodeComponentProps> {
+  render() {
+    return <>You need to create a DOM serializer</>;
+  }
+}
 
 const DOMSerializerDummy: DOMSerializer = {
-  getNodeComponent: () => () => <>You need to create a DOM serializer</>,
+  getNodeComponent: () => Error,
   getMarkComponent: () => () => <>You need to create a DOM serializer</>,
 };
 
