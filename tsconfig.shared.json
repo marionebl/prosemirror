@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "target": "es5",
     "jsx": "react",
     "lib": ["dom", "es2015", "es2017"],
